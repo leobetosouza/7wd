@@ -16,7 +16,7 @@
 	const getCard = () => activeCards[cardCount++];
 
 	const pushHistory = action => {
-		historyStack = [...historyStack, action];
+		historyStack = [action, ...historyStack];
 	};
 
 	const handleRemoveCard = cardSlot => {
