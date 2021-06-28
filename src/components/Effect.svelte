@@ -17,7 +17,13 @@
     <spam class="resource-empty resource-science resource-science-{value}" title="science symbol {value}"></spam>
 {/if}
 {#if effect === "stock"}
-    <spam class="resource-empty resource-stock resource-{value}"  title="Stock of {value}"></spam>
+    {#if Array.isArray(value)}
+        {#each value as v}
+            <svelte:self effect="stock" value={v} />
+        {/each}
+    {:else}
+        <spam class="resource-empty resource-stock resource-{value}"  title="Stock of {value}"></spam>
+    {/if}
 {/if}
 {#if effect === "or"}
     {#each Object.entries(value) as [e, v], i}
