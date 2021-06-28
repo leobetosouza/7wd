@@ -1,14 +1,24 @@
 <script>
+	import { afterUpdate } from 'svelte';
+
     import Card from '../card/Card.svelte';
 
     export let tableLayout;
     export let getCard;
+	export let totalCards;
+	export let onRemoveCard;
+	export let onEndAge;
 
 	let removedCardSlots = [];
 
 	const removeCard = event => {
 		removedCardSlots = [ event.detail, ...removedCardSlots ];
+		onRemoveCard({ card: event.detail });
 	};
+
+	afterUpdate(() => {
+		if (removedCardSlots.length === totalCards) onEndAge();
+	})
 
 </script>
 
