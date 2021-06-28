@@ -1,0 +1,712 @@
+{
+    "1st-age" : [
+        {
+            "name": "Madereira",
+            "type": "raw",
+            "cost": null,
+            "effects": { "wood": 1 },
+            "age": 1
+        },
+        {
+            "name": "Farmácia",
+            "type": "science",
+            "cost": { "coins": 2 },
+            "effects": { "science": "pestle", "chain": "gear" },
+            "age": 1
+        },
+        {
+            "name": "Cava de Argila",
+            "type": "raw",
+            "cost": { "coins": 1 },
+            "effects": { "clay": 1 },
+            "age": 1
+        },
+        {
+            "name": "Paliçada",
+            "type": "military",
+            "cost": { "coins": 2 },
+            "effects": { "shields": 1, "chain": "tower" },
+            "age": 1
+        },
+        {
+            "name": "Prensa",
+            "type": "manufacture",
+            "cost": { "coins": 1 },
+            "effects": { "papyrus": 1 },
+            "age": 1
+        },
+        {
+            "name": "Argileira",
+            "type": "raw",
+            "cost": null,
+            "effects": { "clay": 1 },
+            "age": 1
+        },
+        {
+            "name": "Canteira",
+            "type": "raw",
+            "cost": { "coins": 1},
+            "effects": { "stone": 1 },
+            "age": 1
+        },
+        {
+            "name": "Pedreira",
+            "type": "raw",
+            "cost": null,
+            "effects": { "stone": 1 },
+            "age": 1
+        },
+        {
+            "name": "Campo de Lenhadores",
+            "type": "raw",
+            "cost": { "coins": 1 },
+            "effects": { "wood": 1 },
+            "age": 1
+        },
+        {
+            "name": "Torre de Vigia",
+            "type": "military",
+            "cost": null,
+            "effects": { "shields": 1 },
+            "age": 1
+        },
+        {
+            "name": "Banhos",
+            "type": "civic",
+            "cost": { "stone": 1 },
+            "effects": { "vp": 3, "chain": "water" },
+            "age": 1
+        },
+        {
+            "name": "Teatro",
+            "type": "civic",
+            "cost": null,
+            "effects": { "vp": 3, "chain": "drama" },
+            "age": 1
+        },
+        {
+            "name": "Guarnição",
+            "type": "military",
+            "cost": { "clay": 1 },
+            "effects": { "shields": 1, "chain": "sword" },
+            "age": 1
+        },
+        {
+            "name": "Vidraçaria",
+            "type": "manufacture",
+            "cost": { "coins": 1 },
+            "effects": { "glass": 1 },
+            "age": 1
+        },
+        {
+            "name": "Reserva de Argila",
+            "type": "trade",
+            "cost": { "coins": 3 },
+            "effects": { "stock": "clay" },
+            "age": 1
+        },
+        {
+            "name": "Estábulos",
+            "type": "military",
+            "cost": { "wood": 1 },
+            "effects": { "shields": 1, "chain": "horseshoe" },
+            "age": 1
+        },
+        {
+            "name": "Oficina",
+            "type": "science",
+            "cost": { "papyrus": 1 },
+            "effects": { "science": "plummet", "vp": 1 },
+            "age": 1
+        },
+        {
+            "name": "Scriptorium",
+            "type": "science",
+            "cost": { "coins": 2 },
+            "effects": { "science": "witring", "chain": "book" },
+            "age": 1
+        },
+        {
+            "name": "Apotecário",
+            "type": "science",
+            "cost": { "glass": 1 },
+            "effects": { "science": "wheel", "vp": 1 },
+            "age": 1
+        },
+        {
+            "name": "Altar",
+            "type": "civic",
+            "cost": null,
+            "effects": { "vp": 3, "chain": "luna" },
+            "age": 1
+        },
+        {
+            "name": "Reserva de Madeira",
+            "type": "trade",
+            "cost": { "coins": 3 },
+            "effects": { "stock": "wood" },
+            "age": 1
+        },
+        {
+            "name": "Taverna",
+            "type": "trade",
+            "cost": null,
+            "effects": { "coins": 4, "chain": "jar" },
+            "age": 1
+        },
+        {
+            "name": "Reserva de Pedra",
+            "type": "trade",
+            "cost": { "coins": 3 },
+            "effects": { "stock": "stone" },
+            "age": 1
+        }
+    ],
+    "2nd-age": [
+        {
+            "name": "Aqueduto",
+            "type": "civic",
+            "cost": { "stone": 3, "chain": "water" },
+            "effects": { "vp": 5 },
+            "age": 2
+        },
+        {
+            "name": "Enfermaria",
+            "type": "science",
+            "cost": { "clay": 2, "stone": 1, "chain": "gear" },
+            "effects": { "science": "pestle", "vp": 2 },
+            "age": 2
+        },
+        {
+            "name": "Biblioteca",
+            "type": "science",
+            "cost": { "stone": 1, "wood": 1, "glass": 1, "chain": "book" },
+            "effects": { "science": "witring", "vp": 2 },
+            "age": 2
+        },
+        {
+            "name": "Estátua",
+            "type": "civic",
+            "cost": { "clay": 2, "chain": "drama" },
+            "effects": { "vp": 4, "chain": "pillar" },
+            "age": 2
+        },
+        {
+            "name": "Haras",
+            "type": "military",
+            "cost": { "clay": 1, "wood": 1, "chain": "horseshoe" },
+            "effects": { "shields": 1 },
+            "age": 2
+        },
+        {
+            "name": "Muralha",
+            "type": "military",
+            "cost": { "stone": 2 },
+            "effects": { "shields": 2 },
+            "age": 2
+        },
+        {
+            "name": "Escola",
+            "type": "science",
+            "cost": { "stone": 1, "papyrus": 2 },
+            "effects": { "science": "wheel", "vp": 1, "chain": "harp" },
+            "age": 2
+        },
+        {
+            "name": "Tribunas",
+            "type": "civic",
+            "cost": { "wood": 2, "glass": 1 },
+            "effects": { "vp": 5 },
+            "age": 2
+        },
+        {
+            "name": "Sala de Secagem",
+            "type": "manufacture",
+            "cost": null,
+            "effects": { "papyrus": 1 },
+            "age": 2
+        },
+        {
+            "name": "Fórum",
+            "type": "trade",
+            "cost": { "coins": 3, "clay": 1 },
+            "effects": { "or": { "glass": 1, "papyrus": 1 } },
+            "age": 2
+        },
+        {
+            "name": "Soprador de Vidro",
+            "type": "manufacture",
+            "cost": null,
+            "effects": { "glass": 1 },
+            "age": 2
+        },
+        {
+            "name": "Cervejaria",
+            "type": "trade",
+            "cost": null,
+            "effects": { "coins": 6, "chain": "barrel" },
+            "age": 2
+        },
+        {
+           "name": "Serralheria",
+           "type": "raw",
+           "cost": { "coins": 2 },
+           "effects": { "wood": 2 },
+           "age": 2 
+        },
+        {
+            "name": "Templo",
+            "type": "civic",
+            "cost": { "wood": 1, "papyrus": 1, "chain": "luna" },
+            "effects": { "vp": 4, "chain": "sun" },
+            "age": 2
+        },
+        {
+            "name": "Caserna",
+            "type": "military",
+            "cost": { "coins": 3, "chain": "sword" },
+            "effects": { "shields": 1 },
+            "age": 2
+        },
+        {
+           "name": "Pedreira de Lavra em Tiras",
+           "type": "raw",
+           "cost": { "coins": 2 },
+           "effects": { "stone": 2 },
+           "age": 2 
+        },
+        {
+            "name": "Área de Desfiles",
+            "type": "military",
+            "cost": { "clay": 2, "glass": 1 },
+            "effects": { "shields": 2, "chain": "helmet" },
+            "age": 2
+        },
+        {
+            "name": "Tribuna",
+            "type": "civic",
+            "cost": { "stone": 1, "wood": 1 },
+            "effects": { "vp": 4, "chain": "temple" },
+            "age": 2
+        },
+        {
+            "name": "Caravançará",
+            "type": "trade",
+            "cost": { "coins": 2, "glass": 1, "papyrus": 1 },
+            "effects": { "or": { "wood": 1, "clay": 1, "stone": 1 } },
+            "age": 2
+        },
+        {
+            "name": "Alfândega",
+            "type": "trade",
+            "cost": { "coins": 4 },
+            "effects": { "stock": [ "papyrus", "glass" ] },
+            "age": 2
+        },
+        {
+            "name": "Laboratório",
+            "type": "science",
+            "cost": { "wood": 1, "glass": 2 },
+            "effects": { "science": "plummet", "vp": 1, "chain": "lamp" },
+            "age": 2
+        },
+        {
+            "name": "Olaria",
+            "type": "raw",
+            "cost": { "coins": 2 },
+            "effects": { "clay": 2 },
+            "age": 2
+        },
+        {
+            "name": "Arqueria",
+            "type": "military",
+            "cost": { "stone": 1, "wood": 1, "papyrus": 1 },
+            "effects": { "shields": 2, "chain": "target" },
+            "age": 2
+        }
+    ],
+    "3rd-age": [
+        {
+            "name": "Sala de Armas",
+            "type": "trade",
+            "cost": { "stone": 1, "glass": 1 },
+            "effects": { "foreach-card" : { "type": "military", "where": "you-city", "reward": { "coins": 1 } }, "vp": 3 },
+            "age": 3
+        },
+        {
+            "name": "Arena",
+            "type": "trade",
+            "cost": { "clay": 1, "stone": 1, "wood": 1, "chain": "barrel" },
+            "effects": { "foreach-card" : { "type": "built-wonder", "where": "you-city", "reward": { "coins": 2 } }, "vp": 3 },
+            "age": 3
+        },
+        {
+            "name": "Porto",
+            "type": "trade",
+            "cost": { "wood": 1, "glass": 1, "papyrus": 1 },
+            "effects": { "foreach-card" : { "type": "raw", "where": "you-city", "reward": { "coins": 2 } }, "vp": 3 },
+            "age": 3
+        },
+        {
+            "name": "Obelisco",
+            "type": "civic",
+            "cost": { "stone": 2, "glass": 1 },
+            "effects": { "vp": 5 },
+            "age": 3
+        },
+        {
+            "name": "Fortificação",
+            "type": "military",
+            "cost": { "stone": 2, "clay": 1, "papyrus": 1, "chain": "tower" },
+            "effects": { "shields": 2 },
+            "age": 3
+        },
+        {
+            "name": "Prefeitura",
+            "type": "civic",
+            "cost": { "stone": 3, "wood": 2 },
+            "effects": { "vp": 7 },
+            "age": 3
+        },
+        {
+            "name": "Arsenal",
+            "type": "military",
+            "cost": { "clay": 3, "wood": 2 },
+            "effects": { "shields": 3 },
+            "age": 3
+        },
+        {
+            "name": "Jardins",
+            "type": "civic",
+            "cost": { "clay": 2, "wood": 2, "chain": "pillar" },
+            "effects": { "vp": 6 },
+            "age": 3
+        },
+        {
+            "name": "Senado",
+            "type": "civic",
+            "cost": { "clay": 2, "stone": 1, "papyrus": 1, "chain": "temple" },
+            "effects": { "vp": 5 },
+            "age": 3
+        },
+        {
+            "name": "Farol",
+            "type": "trade",
+            "cost": { "clay": 2, "glass": 1, "chain": "jar" },
+            "effects": { "foreach-card" : { "type": "trade", "where": "you-city", "reward": { "coins": 1 } }, "vp": 3 },
+            "age": 3
+        },
+        {
+            "name": "Palácio",
+            "type": "civic",
+            "cost": { "clay": 1, "stone": 1, "wood": 1, "glass": 2 },
+            "effects": { "vp": 7 },
+            "age": 3
+        },
+        {
+            "name": "Estúdio",
+            "type": "science",
+            "cost": { "wood": 2, "glass": 1, "papyrus": 1 },
+            "effects": { "science": "sundial", "vp": 3 },
+            "age": 3
+        },
+        {
+            "name": "Panteão",
+            "type": "civic",
+            "cost": { "clay": 1, "wood": 1, "papyrus": 2, "chain": "sun" },
+            "effects": { "vp": 6 },
+            "age": 3
+        },
+        {
+            "name": "Oficina de Máquinas",
+            "type": "military",
+            "cost": { "wood": 3, "glass": 1, "chain": "target" },
+            "effects": { "shields": 2 },
+            "age": 3
+        },
+        {
+            "name": "Circo",
+            "type": "military",
+            "cost": { "clay": 2, "stone": 2, "chain": "helmet" },
+            "effects": { "shields": 2 },
+            "age": 3
+        },
+        {
+            "name": "Academia",
+            "type": "science",
+            "cost": { "stone": 1, "wood": 1, "glass": 2 },
+            "effects": { "science": "sundial", "vp": 3 },
+            "age": 3
+        },
+        {
+            "name": "Universidade",
+            "type": "science",
+            "cost": { "clay": 1, "glass": 1, "papyrus": 1, "chain": "harp" },
+            "effects": { "science": "astrolabe", "vp": 2 },
+            "age": 3
+        },
+        {
+            "name": "Observatório",
+            "type": "science",
+            "cost": { "stone": 1, "papyrus": 2, "chain": "lamp" },
+            "effects": { "science": "astrolabe", "vp": 2 },
+            "age": 3
+        },
+        {
+            "name": "Pretório",
+            "type": "military",
+            "cost": { "coins": 8 },
+            "effects": { "shields": 3 },
+            "age": 3
+        },
+        {
+            "name": "Câmara de Comércio",
+            "type": "trade",
+            "cost": { "papyrus": 2 },
+            "effects": { "foreach-card" : { "type": "manufacture", "where": "you-city", "reward": { "coins": 3 } }, "vp": 3 },
+            "age": 3
+        }
+    ],
+    "guilds": [
+        {
+            "name": "Guilda dos Comerciantes",
+            "type": "guild",
+            "cost": { "clay": 1, "wood": 1, "glass": 1, "papyrus": 1 },
+            "effects": { "foreach-card" : { "type": "trade", "where": "most-of-type-city", "reward": { "coins": 1, "vp": 1 } } },
+            "age": 3
+        },
+        {
+            "name": "Guilda dos Magistrados",
+            "type": "guild",
+            "cost": { "wood": 2, "clay": 1, "papyrus": 1 },
+            "effects": { "foreach-card" : { "type": "civic", "where": "most-of-type-city", "reward": { "coins": 1, "vp": 1 } } },
+            "age": 3
+        },
+        {
+            "name": "Guilda dos Estrategistas",
+            "type": "guild",
+            "cost": { "stone": 2, "clay": 1, "papyrus": 1 },
+            "effects": { "foreach-card" : { "type": "military", "where": "most-of-type-city", "reward": { "coins": 1, "vp": 1 } } },
+            "age": 3
+        },
+        {
+            "name": "Guilda dos Armadores",
+            "type": "guild",
+            "cost": { "clay": 1, "stone": 1, "glass": 1, "papyrus": 1},
+            "effects": { "foreach-card" : { "type": ["raw", "manufacture"], "where": "most-of-type-city", "reward": { "coins": 1, "vp": 1 } } },
+            "age": 3
+        },
+        {
+            "name": "Guilda dos Agiotas",
+            "type": "guild",
+            "cost": { "stone": 2, "wood": 2 },
+            "effects": { "foreach-card" : { "type": "coins", "where": "most-of-type-city", "reward": { "vp": 1 }, "divide-count-by": 3 } },
+            "age": 3
+        },
+        {
+            "name": "Guilda dos Cientistas",
+            "type": "guild",
+            "cost": { "clay": 2, "wood": 2 },
+            "effects": { "foreach-card" : { "type": "science", "where": "most-of-type-city", "reward": { "coins": 1, "vp": 1 } } },
+            "age": 3
+        },
+        {
+            "name": "Guilda dos Construtores",
+            "type": "guild",
+            "cost": { "stone": 2, "clay": 1, "wood": 1, "glass": 1 },
+            "effects": { "foreach-card" : { "type": "wonder", "where": "most-of-type-city", "reward": { "vp": 2 } } },
+            "age": 3
+        }
+    ],
+    "wonders": [
+        {
+            "name": "A Esfinge",
+            "cost": { "stone": 1, "clay": 1, "glass": 2  },
+            "effects": [ { "replay": 1 }, { "vp": 6 } ]
+        },
+        {
+            "name": "O Templo de Ártemis",
+            "cost": { "wood": 1, "stone": 1, "glass": 1, "papyrus": 1 },
+            "effects": [ { "coins": 12 },  { "replay": 1 } ]
+        },
+        {
+            "name": "Stonehenge",
+            "cost": { "stone": 3, "papyrus": 1 },
+            "effects": { "vp": 9 }
+        },
+        {
+            "name": "Os Jardins Suspensos",
+            "cost": { "wood": 2, "glass": 1, "papyrus": 1 },
+            "effects": [ { "coins": 6 }, { "replay": 1 },  { "vp": 3 } ]
+        },
+        {
+            "name": "A Via Ápia",
+            "cost": { "wood": 2, "glass": 1, "papyrus": 1 },
+            "effects": [ { "coins": 3 }, { "debit": 3 }, { "replay": 1 },  { "vp": 3 } ]
+        },
+        {
+            "name": "As Pirâmides",
+            "cost": { "stone": 3, "papyrus": 1 },
+            "effects": { "vp": 9 }
+        },
+        {
+            "name": "Pireu",
+            "cost": { "wood": 1, "stone": 1, "clay": 1 },
+            "effects": [ { "or": { "glass": 1, "papyrus": 1 } }, { "replay": 1 }, { "vp": 2} ]
+        },
+        {
+            "name": "O Grande Farol",
+            "cost": { "wood": 1, "stone": 1, "papyrus": 2 },
+            "effects": [ { "or": { "clay": 1, "stone": 1, "wood": 1 } }, { "vp": 4 } ]
+        },
+        {
+            "name": "O Circo Máximo",
+            "cost": { "stone": 2, "wood": 1, "glass": 1 },
+            "effects": [ { "attack": "manufacture" }, { "shields": 1 }, { "vp": 3 } ]
+        },
+        {
+            "name": "A Estátua de Zeus",
+            "cost": { "stone": 1, "wood": 1, "clay": 1, "papyrus": 2 },
+            "effects": [ { "attack": "raw" }, { "shields": 1 }, { "vp": 3 } ]
+        },
+        {
+            "name": "O Colosso",
+            "cost": { "clay": 3, "papyrus": 1 },
+            "effects": [ { "shields": 2 }, { "vp": 3 } ]
+        },
+        {
+            "name": "Estátua da Liberdade",
+            "cost": { "wood": 1, "stone": 1, "clay": 1, "papyrus": 1, "glass": 1 },
+            "effects": [ { "take-from-reserve": 1 }, { "vp": 5 } ]
+        },
+        {
+            "name": "Estátua da Liberdade",
+            "cost": { "wood": 1, "stone": 1, "clay": 1, "papyrus": 1, "glass": 1 },
+            "effects": [ { "take-from-reserve": 1 }, { "vp": 5 } ]
+        },
+        {
+            "name": "O Mausoléu",
+            "cost": { "clay": 2, "glass": 2, "papyrus": 1 },
+            "effects": [ { "take-from-discard": 1 }, { "vp": 2 } ]
+        },
+        {
+            "name": "A Grande Biblioteca",
+            "cost": { "wood": 3, "glass": 1, "papyrus": 1 },
+            "effects": [ { "take-progress-token": 1 }, { "vp": 4 } ]
+        },
+        {
+            "name": "Sagrada Família",
+            "cost": { "wood": 3, "glass": 1, "papyrus": 1 },
+            "effects": [ { "take-progress-token": 1 }, { "vp": 4 } ]
+        }
+        
+    ],
+    "progress-tokens": [
+        {
+            "name": "Agricultura",
+            "effects": { "coins": 6, "vp": 4 }
+        },
+        {
+            "name": "Arquitetura",
+            "effects": { "cost-discount": "wonder" }
+        },
+        {
+            "name": "Economia",
+            "effects": { "bank-dommination": 1 }
+        },
+        {
+            "name": "Lei",
+            "effects": { "science": "laws" }
+        },
+        {
+            "name": "Alvenaria",
+            "effects": { "cost-discount": "civic" }
+        },
+        {
+            "name": "Matemática",
+            "effects": { "vp-by-progress-token": 3 }
+        },
+        {
+            "name": "Filosofia",
+            "effects": { "vp": 7 }
+        },
+        {
+            "name": "Estratégia",
+            "effects": { "extra-shield-by-military": 1 }
+        },
+        {
+            "name": "Teologia",
+            "effects": { "replay-when-build-wonder": 1 }
+        },
+        {
+            "name": "Urbanismo",
+            "effects": { "coins": 6, "coins-when-chaining": 4 }
+        }
+    ],
+    "table-layouts": {
+        "1st-age": {
+            "a": {
+                "slots": [ null, null, { "covered_by": [ [ "b", 1 ], [ "b", 2 ] ] }, { "covered_by": [ [ "b", 2 ], [ "b", 3 ] ] }, null, null ]
+            },
+            "b": {
+                "shifted": true,
+                "slots": [ null, { "turned": true, "covered_by": [ [ "c", 1 ], [ "c", 2 ] ] }, { "turned": true, "covered_by": [ [ "c", 2 ], [ "c", 3 ] ] }, { "turned": true, "covered_by": [ [ "c", 3 ], [ "c", 4 ] ] }, null, null ]
+            },
+            "c": {
+                "slots": [ null, { "covered_by": [ [ "d", 0 ], [ "d", 1 ] ] }, { "covered_by": [ [ "d", 1 ], [ "d", 2 ] ] }, { "covered_by": [ [ "d", 2 ], [ "d", 3 ] ] }, { "covered_by": [ [ "d", 3 ], [ "d", 4 ] ] }, null ]
+            },
+            "d": {
+                "shifted": true,
+                "slots": [ { "turned": true, "covered_by": [ [ "e", 0 ], [ "e", 1 ] ] }, { "turned": true, "covered_by": [ [ "e", 1 ], [ "e", 2 ] ] }, { "turned": true, "covered_by": [ [ "e", 2 ], [ "e", 3 ] ] }, { "turned": true, "covered_by": [ [ "e", 3 ], [ "e", 4 ] ] }, { "turned": true, "covered_by": [ [ "e", 4 ], [ "e", 5 ] ] }, null ]
+            },
+            "e": {
+                "slots": [ {}, {}, {}, {}, {}, {} ]
+            }
+        },
+        "2nd-age": {
+            "a": {
+                "slots": [ { "covered_by": [ [ "b", 0 ] ] }, { "covered_by": [ [ "b", 0 ], [ "b", 1 ] ] }, { "covered_by": [ [ "b", 1 ], [ "b", 2 ] ] }, { "covered_by": [ [ "b", 2 ], [ "b", 3 ] ] }, { "covered_by": [ [ "b", 3 ], [ "b", 4 ] ] }, { "covered_by": [ [ "b", 4 ] ] } ]
+            },
+            "b": {
+                "shifted": true,
+                "slots": [ { "turned": true, "covered_by": [ [ "c", 1 ] ] }, { "turned": true, "covered_by": [ [ "c", 1 ], [ "c", 2 ] ] }, { "turned": true, "covered_by": [ [ "c", 2 ], [ "c", 3 ] ] }, { "turned": true, "covered_by": [ [ "c", 3 ], [ "c", 4 ] ] }, { "turned": true, "covered_by": [ [ "c", 4 ] ] }, null ]
+            },
+            "c": {
+                "slots": [ null, { "covered_by": [ [ "d", 1 ] ] }, { "covered_by": [ [ "d", 1 ], [ "d", 2 ] ] }, { "covered_by": [ [ "d", 2 ], [ "d", 3 ] ] }, { "covered_by": [ [ "d", 3 ] ] }, null ]
+            },
+            "d": {
+                "shifted": true,
+                "slots": [ null, { "turned": true, "covered_by": [ [ "e", 2 ] ] }, { "turned": true, "covered_by": [ [ "e", 2 ], [ "e", 3 ] ] }, { "turned": true, "covered_by": [ [ "e", 3 ] ] }, null, null ]
+            },
+            "e": {
+                "slots": [ null, null, {}, {}, null, null ]
+            }
+        },
+        "3rd-age": {
+            "a": {
+                "slots": [ null, null, { "covered_by": [ [ "b", 1 ], [ "b", 2 ] ] }, { "covered_by": [ [ "b", 2 ], [ "b", 3 ] ] }, null, null ]
+            },
+            "b": {
+                "shifted": true,
+                "slots": [ null, { "turned": true, "covered_by": [ [ "c", 1 ], [ "c", 2 ] ] }, { "turned": true, "covered_by": [ [ "c", 2 ], [ "c", 3 ] ] }, { "turned": true, "covered_by": [ [ "c", 3 ], [ "c", 4 ] ] }, null, null ]
+            },
+            "c": {
+                "slots": [ null, { "covered_by": [ [ "d", 1 ] ] }, { "covered_by": [ [ "d", 1 ] ] }, { "covered_by": [ [ "d", 3 ] ] }, { "covered_by": [ [ "d", 3 ] ] }, null ]
+            },
+            "d": {
+                "shifted": true,
+                "slots": [ null, { "turned": true, "covered_by": [ [ "e", 1 ], [ "e", 2 ] ] }, null, { "turned": true, "covered_by": [ [ "e", 3 ], [ "e", 4 ] ] }, null, null ]
+            },
+            "e": {
+                "slots": [ null, { "covered_by": [ [ "f", 1 ] ] }, { "covered_by": [ [ "f", 1 ], [ "f", 2 ] ] }, { "covered_by": [ [ "f", 2 ], [ "f", 3 ] ] }, { "covered_by": [ [ "f", 3 ] ] }, null ]
+            },
+            "f": {
+                "shifted": true,
+                "slots": [ null, { "turned": true, "covered_by": [ [ "g", 2 ] ]  }, { "turned": true, "covered_by": [ [ "g", 2 ], [ "g", 3 ] ] }, { "turned": true, "covered_by": [ [ "g", 3 ] ] }, null, null ]
+            },
+            "g": {
+                "slots": [ null, null, {}, {}, null, null ] 
+            }
+        }
+    }
+}
