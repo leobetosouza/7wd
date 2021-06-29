@@ -51,7 +51,7 @@
 	}
 
 	.table-row-shifted {
-		left: 5em;
+		left: 5rem;
 	}
 
 	.table-row:first-of-type {
@@ -59,27 +59,27 @@
 	}
 
 	.table-row:nth-of-type(2) {
-		top: -7em;
+		top: -7rem;
 	}
 
 	.table-row:nth-of-type(3) {
-		top: -14em;
+		top: -14rem;
 	}
 
 	.table-row:nth-of-type(4) {
-		top: -21em;
+		top: -21rem;
 	}
 
 	.table-row:nth-of-type(5) {
-		top: -28em;
+		top: -28rem;
 	}
 
 	.table-row:nth-of-type(6) {
-		top: -36em;
+		top: -36rem;
 	}
 
 	.table-row:nth-of-type(7) {
-		top: -43em;
+		top: -43rem;
 	}
 
 </style>

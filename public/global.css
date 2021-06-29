@@ -4,6 +4,10 @@ html, body {
 	height: 100%;
 }
 
+html {
+	font-size: 1vmax;
+}
+
 body {
 	color: #333;
 	margin: 0;

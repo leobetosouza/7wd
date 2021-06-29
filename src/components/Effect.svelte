@@ -44,8 +44,8 @@
 <style>
     .resource-chain {
         background: #fff;
-        height: 1.2em;
-        width: 1.2em;
+        height: 1.2rem;
+        width: 1.2rem;
         border: 2px solid #000;
     }
     .resource-chain-top {
@@ -57,15 +57,15 @@
     }
 
     .resource-empty {
-        width: 1.1em;
-        height: 1.1em;
+        width: 1.1rem;
+        height: 1.1rem;
         border: 2px solid #000;
     }
 
     .resource-number {
-        padding: .3em .5em;
+        padding: .3em .5rem;
         border: 2px solid #000;
-        font-size: .8em;
+        font-size: .8rem;
         line-height: 1;
         vertical-align: middle;
         border-radius: 50%;
@@ -79,14 +79,14 @@
         background: goldenrod;
 
         position: absolute;
-        top: -0.9em;
-        left: 0.8em;
+        top: -0.9rem;
+        left: 0.8rem;
 
         transform: scale(.7);
         
-        padding: .3em .5em;
+        padding: .3em .5rem;
         border: 2px solid #000;
-        font-size: .8em;
+        font-size: .8rem;
         line-height: 1;
         vertical-align: middle;
         border-radius: 50%;
@@ -131,8 +131,8 @@
     }
 
     .card-mini {
-        width: 1em;
-        height: 1.2em;
+        width: 1rem;
+        height: 1.2rem;
         border: 1px solid #666;
         border-radius: 3px;
         position: relative;
@@ -141,14 +141,14 @@
     .resource-mini {
         transform: scale(.7);
         position: absolute;
-        bottom: -1.1em;
+        bottom: -1.1rem;
     }
 
     .resource-mini.resource-coins {
-        left: -1em;
+        left: -1rem;
     }
     .resource-mini.resource-vp {
-        right: -1em;
+        right: -1rem;
     }
 
 
@@ -181,7 +181,7 @@
 	}
 
     .resource-cost {
-        margin-left: .1em;
+        margin-left: .1rem;
         transform: scale(.8);
     }
 </style>

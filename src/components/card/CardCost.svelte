@@ -22,6 +22,6 @@
         display: flex;
         align-items: flex-start;
         justify-content: flex-start;
-        margin: .5em 0;
+        margin: .5rem 0;
     }
 </style>

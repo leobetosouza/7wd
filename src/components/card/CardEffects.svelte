@@ -14,7 +14,7 @@
 		display: flex;
 		justify-content: space-around;
 		align-items: center;
-		padding: .6em 1.1em .9em;
+		padding: .6rem 1.1rem .9rem;
 		position: relative;
 		border-bottom: 1px dotted #000;
 	}
