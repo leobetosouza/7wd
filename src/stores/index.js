@@ -1,4 +1,19 @@
-import { writable } from 'svelte/store';
+import { writable, get } from 'svelte/store';
+
+export const currentPlayer = (() => {
+    const player = writable({});
+    const { subscribe, set } = player;
+
+    return {
+        subscribe,
+        set: (p) => {
+            set(get(p))
+        }
+    }
+
+})();
+export const playerOne = writable({});
+export const playerTwo = writable({});
 
 export const removedCardSlots = writable([]);
 export const tableLayout = writable([]);
@@ -30,15 +45,7 @@ export const activeCards = (() => {
 
     return {
         subscribe,
-        next: () => {
-            let card;
-
-            subscribe(arr => {
-                card = arr[count++];
-            });
-
-            return card;
-        },
+        next: () => get(cards)[count++],
         set: (val) => {
             removedCardSlots.set([])
             set(val);

@@ -2,15 +2,14 @@
 	import { afterUpdate } from 'svelte';
 	import { removedCardSlots, activeCards, tableLayout } from '../../stores';
 
+	import { takeCard } from '../../actions';
+
     import Card from '../card/Card.svelte';
 
-	export let onRemoveCard;
 	export let onEndAge;
 
-	const removeCard = (event) => {
-		const { card, slot } = event.detail;
-		removedCardSlots.update(arr => [ slot, ...arr ]);
-		onRemoveCard({ card, slot });
+	const tapCard = event => {
+		takeCard(event.detail);
 	};
 
 	afterUpdate(() => {
@@ -24,7 +23,7 @@
         <div class="table-row {row.shifted ? 'table-row-shifted' : ''}">
             {#each row.slots as slot, i}
                 <Card
-                    on:tap={removeCard}
+                    on:tap={tapCard}
                     {slot}
                     rowName={name}
                     slotIndex={i}

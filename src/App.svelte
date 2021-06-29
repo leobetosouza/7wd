@@ -3,41 +3,18 @@
 	import MainTable from './components/table/MainTable.svelte';
 	import { get1stAgeCards, get2ndAgeCards, get3rdAgeCards, get1stAgeTableLayout, get2ndAgeTableLayout, get3rdAgeTableLayout } from './services/resources';
 
-	import { activeCards, reserve, discard, tableLayout } from './stores';
-	import Player from './stores/player';
+	import { currentPlayer, playerOne, playerTwo, activeCards, removedCardSlots, reserve, discard, tableLayout } from './stores';
+
+	import { createPlayers } from './actions';
 
 	let agePromise;
 	let currentAgeName;
 	let isGameStarted = false;
 
-	const playerOne = Player({ name: 'Player 1', color: 'red' });
-	const playerTwo = Player({ name: 'Player 2', color: 'blue' });
-
-	const playerControl = (() => {
-		const players = [ playerOne, playerTwo ];
-		let n = Math.random() >= 0.5 ? 1 : 0;
-		
-		const idx = (function* () {
-			while (true) {
-				n = n ? 0 : 1;
-				yield n;
-			}
-		})();
-
-		return {
-			getCurrent: () => players[n],
-			getNext: () => players[idx.next().value],
-			setNext: (x) => n = !(x-1) ? 1 : 0
-		};
-
-	})();
-
-	let currentPlayer = playerControl.getCurrent();
-
-	const handleRemoveCard = ({ card, slot }) => {
-		currentPlayer.takeCard(card);
-		currentPlayer = playerControl.getNext();
-	};
+	createPlayers(
+		{ name: 'Player 1', color: 'red' },
+		{ name: 'Player 2', color: 'blue' }
+	);
 
 	const prepareAge = (getAgeCards, getTableLayout) => async () => {
 		const cardsPromise = getAgeCards().then(res => {
@@ -112,9 +89,9 @@
 		{:then}
 		<p style="margin-top: 0">Reserve: {$reserve.length} | Discard: {$discard.length}</p>
 		<section class="gametable">
-			<PlayerTableau player={playerOne} active={playerOne === currentPlayer} />
-			<PlayerTableau player={playerTwo} active={playerTwo === currentPlayer} />
-			<MainTable {onEndAge} onRemoveCard={handleRemoveCard} />
+			<PlayerTableau player={$playerOne} active={$playerOne === $currentPlayer} />
+			<PlayerTableau player={$playerTwo} active={$playerTwo === $currentPlayer} />
+			<MainTable {onEndAge} />
 		</section>
 		{:catch error}
 			<p style="color: red">{error.message}</p>

@@ -3,14 +3,20 @@
 
     export let player;
     export let active;
-    const { color, coins, vps, name, shields, tableau } = player;
+    const { tableau, color, coins, vps, name, shields, stone, wood, clay, papyrus, glass } = player;
 
 </script>
 
 <section class="player-tableau player-color-{$color} {active ? 'player-tableau-active' : '' }">
     <h1>{$name}</h1>
     <p>
-        Coins: {$coins} | Shields: {$shields} | VPs: {$vps} | Cards: {$tableau.length}
+        Cards: {$tableau.length}
+        <br />
+        Coins: {$coins} | Shields: {$shields} | VPs: {$vps}
+        <br />
+        Stone: {$stone} | Wood: {$wood} | Clay: {$clay}
+        <br />
+        Glass: {$glass} | Papyrus: {$papyrus}
     </p>
     <div class="card-stack">
     {#each $tableau as card, i}
