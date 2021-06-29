@@ -1,13 +1,14 @@
 <script>
     import CardPresenter from "../card/CardPresenter.svelte";
 
-    export let player;
-    export let active;
-    const { tableau, color, coins, vps, name, shields, stone, wood, clay, papyrus, glass } = player;
+    import { currentPlayer } from '../../stores';
 
+    export let player;
+
+    const { tableau, color, coins, vps, name, shields, stone, wood, clay, papyrus, glass } = player;
 </script>
 
-<section class="player-tableau player-color-{$color} {active ? 'player-tableau-active' : '' }">
+<section class="player-tableau player-color-{$color} {player === $currentPlayer ? 'player-tableau-active' : '' }">
     <h1>{$name}</h1>
     <p>
         Cards: {$tableau.length}

@@ -89,8 +89,8 @@
 		{:then}
 		<p style="margin-top: 0">Reserve: {$reserve.length} | Discard: {$discard.length}</p>
 		<section class="gametable">
-			<PlayerTableau player={$playerOne} active={$playerOne === $currentPlayer} />
-			<PlayerTableau player={$playerTwo} active={$playerTwo === $currentPlayer} />
+			<PlayerTableau player={$playerOne} />
+			<PlayerTableau player={$playerTwo} />
 			<MainTable {onEndAge} />
 		</section>
 		{:catch error}
