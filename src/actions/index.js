@@ -1,6 +1,7 @@
 import { get } from 'svelte/store';
 
-import { currentPlayer, playerOne, playerTwo, activeCards, removedCardSlots, reserve, discard, tableLayout } from '../stores';
+import { get1stAgeCards, get2ndAgeCards, get3rdAgeCards, get1stAgeTableLayout, get2ndAgeTableLayout, get3rdAgeTableLayout } from '../services/resources';
+import { agePromise, currentAgeName, currentPlayer, playerOne, playerTwo, activeCards, removedCardSlots, reserve, tableLayout } from '../stores';
 import Player from '../stores/player';
 
 let playerControl;
@@ -42,4 +43,52 @@ export const takeCard = ({ card, slot }) => {
     } catch(e){
         console.error(e);
     }
+};
+
+const prepareAge = (getAgeCards, getTableLayout) => async () => {
+    const cardsPromise = getAgeCards().then(res => {
+        reserve.add(...res.reserve);
+        activeCards.set(res.cards);
+    });
+
+    const tableLayoutPromise = getTableLayout().then(layout => {
+        tableLayout.set(layout);
+    });
+
+    agePromise.set(Promise.all([ cardsPromise, tableLayoutPromise ]));
+};
+
+const agesList = [
+    {
+        name: '1st Age',
+        prepare: prepareAge(get1stAgeCards, get1stAgeTableLayout),
+    },
+    {
+        name: '2nd Age',
+        prepare: prepareAge(get2ndAgeCards, get2ndAgeTableLayout),
+    },
+    {
+        name: '3rd Age',
+        prepare: prepareAge(get3rdAgeCards, get3rdAgeTableLayout),
+    }
+];
+
+const ages = (function* () {
+    let count = 0;
+    while (count !== agesList.length) yield agesList[count++];
+})();
+
+export const setupNextAge = async () => {
+    const age = ages.next();
+    
+    if (!age.done) {
+            
+        age.value.prepare();
+
+        await get(agePromise);
+
+        currentAgeName.set(age.value.name);
+    } else {
+        currentAgeName.set('GAME&apos;s END');
+    }	
 };

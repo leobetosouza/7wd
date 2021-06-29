@@ -1,5 +1,8 @@
 import { writable, get } from 'svelte/store';
 
+export const agePromise = writable();
+export const currentAgeName = writable('');
+
 export const currentPlayer = (() => {
     const player = writable({});
     const { subscribe, set } = player;
@@ -12,6 +15,7 @@ export const currentPlayer = (() => {
     }
 
 })();
+
 export const playerOne = writable({});
 export const playerTwo = writable({});
 
