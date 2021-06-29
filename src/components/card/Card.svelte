@@ -1,22 +1,21 @@
 <script>
 	import { createEventDispatcher } from 'svelte';
+	import { removedCardSlots, activeCards } from '../../stores';
 
     import CardPresenter from './CardPresenter.svelte';
 
-    export let getCard;
     export let slot;
 	export let slotIndex;
 	export let rowName;
-    export let removedCardSlots;
 	
 	const dispatch = createEventDispatcher();
 
-    const handleFrontClick = () => {
-        dispatch('remove_card', { row: rowName, index: slotIndex });
+    const handleFrontClick = card => {
+        dispatch('tap', { card, slot: { row: rowName, index: slotIndex } });
     };
 
 	$: hasBeenRemoved = (row, index) =>
-        !!removedCardSlots.find(card => card.row === row && card.index === index);
+        !!$removedCardSlots.find(card => card.row === row && card.index === index);
 
 	$: hasCover = ({ covered_by = [] }) => 
         !!covered_by.length &&
@@ -28,7 +27,7 @@
     <CardPresenter
         onClickFrontCard={handleFrontClick}
         blocked={hasCover(slot)}
-        card={getCard()}
+        card={activeCards.next()}
         turned={slot.turned}
     />
 {:else}

@@ -1,38 +1,30 @@
 <script>
+	import PlayerTableau from './components/player/PlayerTableau.svelte';
 	import MainTable from './components/table/MainTable.svelte';
 	import { get1stAgeCards, get2ndAgeCards, get3rdAgeCards, get1stAgeTableLayout, get2ndAgeTableLayout, get3rdAgeTableLayout } from './services/resources';
 
-	let reserve = [];
-	let discard = [];
-	let activeCards = [];
-	let tableLayout;
+	import { activeCards, reserve, discard, tableLayout } from './stores';
+
 	let agePromise;
-	let cardCount = 0;
 	let currentAgeName;
 	let isGameStarted = false;
 
-	let historyStack = [];
+	const playerOne = { name: 'Player 1', color: 'red' };
+	const playerTwo = { name: 'Player 2', color: 'blue' };
 
-	const getCard = () => activeCards[cardCount++];
-
-	const pushHistory = action => {
-		historyStack = [action, ...historyStack];
-	};
-
-	const handleRemoveCard = cardSlot => {
-		pushHistory(cardSlot);
+	const handleRemoveCard = ({ card, slot }) => {
+		//playerOne.takeCard(card);
 	};
 
 	const prepareAge = (getAgeCards, getTableLayout) => async () => {
 		const cardsPromise = getAgeCards().then(res => {
-			reserve = [ ...reserve, ...res.reserve ];
-			discard = [ ...discard, ...activeCards];
-			activeCards = res.cards;
-			cardCount = 0;
+			reserve.add(...res.reserve);
+			discard.add(...$activeCards);
+			activeCards.set(res.cards);
 		});
 
 		const tableLayoutPromise = getTableLayout().then(layout => {
-			tableLayout = layout;
+			tableLayout.set(layout);
 		});
 
 		agePromise = Promise.all([ cardsPromise, tableLayoutPromise ]);
@@ -68,11 +60,6 @@
 			await age.value.prepare();
 
 			currentAgeName = age.value.name;
-
-			pushHistory({
-				reserve: [...reserve],
-				activeCards: [...activeCards]
-			});
 		} else {
 			currentAgeName = 'GAME&apos;s END';
 		}	
@@ -101,7 +88,12 @@
 		{#await agePromise}
 			<p>waiting cards...</p>
 		{:then}
-			<MainTable {onEndAge} onRemoveCard={handleRemoveCard} {tableLayout} {getCard} totalCards={activeCards.length} />
+		<p>Reserve: {$reserve.length} | Discard: {$discard.length}</p>
+		<section class="gametable">
+			<PlayerTableau player={playerOne} />
+			<PlayerTableau player={playerTwo} />
+			<MainTable {onEndAge} onRemoveCard={handleRemoveCard} />
+		</section>
 		{:catch error}
 			<p style="color: red">{error.message}</p>
 		{/await}
@@ -113,6 +105,15 @@
 		text-align: center;
 		padding: 0;
 		margin: 0 auto;
+	}
+
+	.gametable {
+		background: gray;
+		display: grid;
+		grid-gap: 1rem;
+
+		grid-template-areas: "player1 maintable player2";
+		grid-template-columns: 1fr auto 1fr;
 	}
 
 

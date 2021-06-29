@@ -1,38 +1,33 @@
 <script>
 	import { afterUpdate } from 'svelte';
+	import { removedCardSlots, activeCards, tableLayout } from '../../stores';
 
     import Card from '../card/Card.svelte';
 
-    export let tableLayout;
-    export let getCard;
-	export let totalCards;
 	export let onRemoveCard;
 	export let onEndAge;
 
-	let removedCardSlots = [];
-
-	const removeCard = event => {
-		removedCardSlots = [ event.detail, ...removedCardSlots ];
-		onRemoveCard({ card: event.detail });
+	const removeCard = (event) => {
+		const { card, slot } = event.detail;
+		removedCardSlots.update(arr => [ slot, ...arr ]);
+		onRemoveCard({ card, slot });
 	};
 
 	afterUpdate(() => {
-		if (removedCardSlots.length === totalCards) onEndAge();
+		if ($removedCardSlots.length === $activeCards.length) onEndAge();
 	})
 
 </script>
 
 <section class="cards-table">
-    {#each Object.entries(tableLayout) as [name, row]}
+    {#each Object.entries($tableLayout) as [name, row]}
         <div class="table-row {row.shifted ? 'table-row-shifted' : ''}">
             {#each row.slots as slot, i}
                 <Card
-                    on:remove_card={removeCard}
+                    on:tap={removeCard}
                     {slot}
-                    {getCard}
                     rowName={name}
                     slotIndex={i}
-                    removedCardSlots={removedCardSlots}
                 />
             {/each}
         </div>
@@ -41,6 +36,9 @@
 
 <style>
 
+	.cards-table {
+		grid-area: maintable;
+	}
 
 	.table-row {
 		display:flex;

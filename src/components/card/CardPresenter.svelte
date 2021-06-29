@@ -16,7 +16,7 @@
 	});
 
 	const handleClick = () => {
-		if (!blocked) onClickFrontCard();
+		if (!blocked) onClickFrontCard(card);
 	}
 
 </script>
