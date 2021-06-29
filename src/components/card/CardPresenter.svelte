@@ -16,7 +16,7 @@
 	});
 
 	const handleClick = () => {
-		if (!blocked) onClickFrontCard(card);
+		if (!blocked && onClickFrontCard) onClickFrontCard(card);
 	}
 
 </script>
@@ -24,7 +24,7 @@
 {#if invisible}
 	<div class="card card-invisible">&nbsp</div>
 {:else}
-	<div class="card {blocked ? 'card-blocked' : ''}">
+	<div class="card {!onClickFrontCard || blocked ? 'card-blocked' : ''}">
 		{#if turned}
 			<div class="card-back {card.type === 'guild' ? 'card-age-guild' : `card-age-${card.age}`}">
 				<p class="card-age">{card.type === 'guild' ? 'G' : card.age}</p>

@@ -4,22 +4,44 @@
 	import { get1stAgeCards, get2ndAgeCards, get3rdAgeCards, get1stAgeTableLayout, get2ndAgeTableLayout, get3rdAgeTableLayout } from './services/resources';
 
 	import { activeCards, reserve, discard, tableLayout } from './stores';
+	import Player from './stores/player';
 
 	let agePromise;
 	let currentAgeName;
 	let isGameStarted = false;
 
-	const playerOne = { name: 'Player 1', color: 'red' };
-	const playerTwo = { name: 'Player 2', color: 'blue' };
+	const playerOne = Player({ name: 'Player 1', color: 'red' });
+	const playerTwo = Player({ name: 'Player 2', color: 'blue' });
+
+	const playerControl = (() => {
+		const players = [ playerOne, playerTwo ];
+		let n = Math.random() >= 0.5 ? 1 : 0;
+		
+		const idx = (function* () {
+			while (true) {
+				n = n ? 0 : 1;
+				yield n;
+			}
+		})();
+
+		return {
+			getCurrent: () => players[n],
+			getNext: () => players[idx.next().value],
+			setNext: (x) => n = !(x-1) ? 1 : 0
+		};
+
+	})();
+
+	let currentPlayer = playerControl.getCurrent();
 
 	const handleRemoveCard = ({ card, slot }) => {
-		//playerOne.takeCard(card);
+		currentPlayer.takeCard(card);
+		currentPlayer = playerControl.getNext();
 	};
 
 	const prepareAge = (getAgeCards, getTableLayout) => async () => {
 		const cardsPromise = getAgeCards().then(res => {
 			reserve.add(...res.reserve);
-			discard.add(...$activeCards);
 			activeCards.set(res.cards);
 		});
 
@@ -79,7 +101,7 @@
 
 <main>
 	{#if isGameStarted}
-		<h1>{@html currentAgeName}</h1>
+		<h1 style="margin: 0">{@html currentAgeName}</h1>
 	{:else}
 		<button on:click|once={startGame}>Start Game</button>
 	{/if}
@@ -88,10 +110,10 @@
 		{#await agePromise}
 			<p>waiting cards...</p>
 		{:then}
-		<p>Reserve: {$reserve.length} | Discard: {$discard.length}</p>
+		<p style="margin-top: 0">Reserve: {$reserve.length} | Discard: {$discard.length}</p>
 		<section class="gametable">
-			<PlayerTableau player={playerOne} />
-			<PlayerTableau player={playerTwo} />
+			<PlayerTableau player={playerOne} active={playerOne === currentPlayer} />
+			<PlayerTableau player={playerTwo} active={playerTwo === currentPlayer} />
 			<MainTable {onEndAge} onRemoveCard={handleRemoveCard} />
 		</section>
 		{:catch error}
@@ -105,6 +127,8 @@
 		text-align: center;
 		padding: 0;
 		margin: 0 auto;
+		height: 100%;
+		overflow: hidden;
 	}
 
 	.gametable {
