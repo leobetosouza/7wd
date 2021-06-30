@@ -5,12 +5,12 @@
 
     export let player;
 
-    const { tableau, color, coins, vps, name, shields, stone, wood, clay, papyrus, glass } = player;
+    const { tableau, color, coins, vps, name, shields, stone, wood, clay, papyrus, glass, differentSciences } = player;
 </script>
 
 <section class="player-tableau player-color-{$color} {player === $currentPlayer ? 'player-tableau-active' : '' }">
     <h1>{$name}</h1>
-    <p>
+    <p style="background: whitesmoke">
         Cards: {$tableau.length}
         <br />
         Coins: {$coins} | Shields: {$shields} | VPs: {$vps}
@@ -18,6 +18,8 @@
         Stone: {$stone} | Wood: {$wood} | Clay: {$clay}
         <br />
         Glass: {$glass} | Papyrus: {$papyrus}
+        <br >
+        Different Sciences: {$differentSciences}
     </p>
     <div class="card-stack">
     {#each $tableau as card, i}

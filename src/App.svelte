@@ -16,10 +16,6 @@
 		isGameStarted = true;
 	};
 
-	const onEndAge = () => {
-		setupNextAge();
-	};
-
 	onMount(() => {
 		createPlayers(
 			{ name: 'Player 1', color: 'red' },
@@ -44,7 +40,7 @@
 		<section class="gametable">
 			<PlayerTableau player={$playerOne} />
 			<PlayerTableau player={$playerTwo} />
-			<MainTable {onEndAge} />
+			<MainTable />
 		</section>
 		{:catch error}
 			<p style="color: red">{error.message}</p>

@@ -2,18 +2,12 @@
 	import { afterUpdate } from 'svelte';
 	import { removedCardSlots, activeCards, tableLayout } from '../../stores';
 
-	import { takeCard } from '../../actions';
-
     import Card from '../card/Card.svelte';
 
-	export let onEndAge;
-
-	const tapCard = event => {
-		takeCard(event.detail);
-	};
+	import { setupNextAge } from '../../actions';
 
 	afterUpdate(() => {
-		if ($removedCardSlots.length === $activeCards.length) onEndAge();
+		if ($removedCardSlots.length === $activeCards.length) setupNextAge();
 	})
 
 </script>
@@ -23,7 +17,6 @@
         <div class="table-row {row.shifted ? 'table-row-shifted' : ''}">
             {#each row.slots as slot, i}
                 <Card
-                    on:tap={tapCard}
                     {slot}
                     rowName={name}
                     slotIndex={i}

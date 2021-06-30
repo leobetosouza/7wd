@@ -1,7 +1,7 @@
 import { get } from 'svelte/store';
 
 import { get1stAgeCards, get2ndAgeCards, get3rdAgeCards, get1stAgeTableLayout, get2ndAgeTableLayout, get3rdAgeTableLayout } from '../services/resources';
-import { agePromise, currentAgeName, currentPlayer, playerOne, playerTwo, activeCards, removedCardSlots, reserve, tableLayout } from '../stores';
+import { agePromise, currentAgeName, currentPlayer, playerOne, playerTwo, activeCards, removedCardSlots, reserve, discard, tableLayout } from '../stores';
 import Player from '../stores/player';
 
 let playerControl;
@@ -32,18 +32,6 @@ export const createPlayers = (playerOneData, playerTwoData) => {
 
 	currentPlayer.set(playerControl.getCurrent());
 }
-
-export const takeCard = ({ card, slot }) => {
-    try {
-        if (card.cost?.coins) get(currentPlayer).takeDebit(card.cost.coins);
-        
-        removedCardSlots.update(arr => [ slot, ...arr ]);
-        get(currentPlayer).takeCard(card);
-        currentPlayer.set(playerControl.getNext());
-    } catch(e){
-        console.error(e);
-    }
-};
 
 const prepareAge = (getAgeCards, getTableLayout) => async () => {
     const cardsPromise = getAgeCards().then(res => {
@@ -78,6 +66,7 @@ const ages = (function* () {
     while (count !== agesList.length) yield agesList[count++];
 })();
 
+
 export const setupNextAge = async () => {
     const age = ages.next();
     
@@ -91,4 +80,28 @@ export const setupNextAge = async () => {
     } else {
         currentAgeName.set('GAME&apos;s END');
     }	
+};
+
+export const buyCard = ({ card, slot }) => {
+    try {
+        const $currentPlayer = get(currentPlayer);
+        const cardCost = $currentPlayer.getCardBuyValue(card);
+        if (cardCost) $currentPlayer.takeDebit(cardCost);
+        
+        removedCardSlots.update(arr => [ slot, ...arr ]);
+        $currentPlayer.takeCard(card);
+        currentPlayer.set(playerControl.getNext());
+    } catch(e) {
+        console.error(e);
+    }
+};
+
+export const sellCard = ({ card, slot }) => {
+    const $currentPlayer = get(currentPlayer);
+
+    $currentPlayer.tradeCard();
+
+    removedCardSlots.update(arr => [ slot, ...arr ]);
+    discard.add(card);
+    currentPlayer.set(playerControl.getNext());
 };

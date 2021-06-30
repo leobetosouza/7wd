@@ -1,4 +1,12 @@
 import { writable, derived, get } from 'svelte/store';
+import { currentPlayer, playerOne, playerTwo } from './index';
+
+const getOpponentPlayer = () => {
+    const $playerOne = get(playerOne);
+
+    if (get(currentPlayer) === $playerOne) return get(playerTwo);
+    else return $playerOne;
+};
 
 export default ({ name, color }) => {
     const tableau = writable([]);
@@ -14,7 +22,6 @@ export default ({ name, color }) => {
 
         return acc + vp;
     }, 0));
-
     
     const shields = derived(tableau, $tableau => $tableau.reduce((acc, { effects }) => {
         const { shields = 0 } = effects;
@@ -66,13 +73,23 @@ export default ({ name, color }) => {
         if (!chain) return acc;
         return [ ...acc, chain ];
     }, []));
+
+    const differentSciences = derived(tableau, $tableau => $tableau.reduce((acc, { effects }) => {
+        const { science } = effects;
+
+        if (!science) return acc;
+        if (acc.includes(science)) return acc;
+        return [...acc, science];
+    }, []).length);
+
+    const countCards = testType => get(tableau).reduce((acc, { type }) => testType === type ? acc + 1 : acc, 0)
     
     return {
         tableau,
         coins: balance,
         shields, vps,
         stone, wood, clay, glass, papyrus,
-        stock, chain,
+        stock, chain, differentSciences,
         name: writable(name),
         color: writable(color),
         takeCard: card => tableau.update(arr => [card, ...arr]),
@@ -81,6 +98,35 @@ export default ({ name, color }) => {
 
             if (debit <= $balance) coins.update(c => c - debit);
             else throw new Error('Not enougth coins');
-        } 
+        },
+        tradeCard: () => {
+            const tradeValue = countCards('trade');
+
+            coins.update(c => c + tradeValue + 2);
+        },
+        getCardBuyValue: ({ cost }) => {
+            if (!cost) return 0;
+
+            if (cost.chain & get(chain).includes(cost.chain)) {
+                return 0;
+            }
+
+            const opponent = getOpponentPlayer();
+            let accCost = 0;
+
+            for (let [res, store] of [['stone', stone], ['wood', wood], ['clay', clay], ['glass', glass], ['papyrus', papyrus]]) {
+                const resCost = cost[res] - get(store);
+
+                if (resCost > 0) {
+                    if (get(stock).includes(res)) accCost += resCost;
+                    else accCost += resCost * (get(opponent[res]) + 2) 
+                }
+            }
+
+            return accCost + (cost.coins || 0);
+        },
+        getCardSellValue: card => {
+            return 2 + countCards('trade');
+        }
     };
 }

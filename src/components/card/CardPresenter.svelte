@@ -1,39 +1,65 @@
 <script>
-	import { beforeUpdate } from 'svelte';
+	import { beforeUpdate, createEventDispatcher } from 'svelte';
+
+	import { currentPlayer } from '../../stores';
 
 	import CardEffects from './CardEffects.svelte';
 	import CardCost from './CardCost.svelte';
 
     export let card = null;
 	export let invisible = false;
-	export let onClickFrontCard = null;
 
 	export let turned = false;
 	export let blocked = false;
+
+	let scaled = false;
+
+    const zoomCard = () => {
+        scaled = true;
+    };
+
+    const cancelZoom = () => {
+        scaled = false;
+    };
 
 	beforeUpdate(() => {
 		if (!blocked) turned = false;
 	});
 
-	const handleClick = () => {
-		if (!blocked && onClickFrontCard) onClickFrontCard(card);
-	}
+	const dispatch = createEventDispatcher();
+
+    const handleSellCard = () => {
+        dispatch('sell_card', { card });
+    };
+
+    const handleBuyCard = () => {
+        dispatch('buy_card', { card });
+    };
 
 </script>
 
 {#if invisible}
 	<div class="card card-invisible">&nbsp</div>
 {:else}
-	<div class="card {!onClickFrontCard || blocked ? 'card-blocked' : ''}">
+	<div class="card {scaled ? 'card-zoom' : ''} { turned ? 'card-blocked' : ''}">
 		{#if turned}
 			<div class="card-back {card.type === 'guild' ? 'card-age-guild' : `card-age-${card.age}`}">
 				<p class="card-age">{card.type === 'guild' ? 'G' : card.age}</p>
 			</div>
 		{:else}
-			<div class="card-front card-type-{card.type}" on:click={handleClick}>
+			<div class="card-front card-type-{card.type}" on:click={zoomCard}>
 				<h1 class="card-name">{card.name}</h1>
 				<CardEffects effects={card.effects} />
 				<CardCost cost={card.cost} />
+				{#if scaled}
+					<div class="card-actions">
+						{#if !blocked}
+							<button on:click|stopPropagation={handleBuyCard}>Buy (${$currentPlayer.getCardBuyValue(card)})</button>
+							<button on:click|stopPropagation={handleSellCard}>Sell (${$currentPlayer.getCardSellValue(card)})</button>
+						{/if}
+						<button on:click|stopPropagation={cancelZoom}>Cancel</button>
+					</div>
+				{/if}
 			</div>
 		{/if}
 	</div>
@@ -52,6 +78,12 @@
 		height: 10rem;
 
 		cursor: pointer;
+	}
+
+	.card-zoom {
+		transform: scale(2.5);
+		z-index: 3;
+		cursor: auto;
 	}
 
 	.card-blocked {
@@ -82,6 +114,16 @@
 		font-size: .6rem;
 		font-weight: bold;
 		padding: .3rem 0;
+	}
+
+	.card-actions {
+		position: absolute;
+		left: 0;
+		bottom: 1.5rem;
+		width: 100%;
+		font-size: .4rem;
+		display: flex;
+		justify-content: space-around;
 	}
 
 
