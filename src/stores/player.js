@@ -125,8 +125,12 @@ export default ({ name, color }) => {
 
             return accCost + (cost.coins || 0);
         },
-        getCardSellValue: card => {
+        getCardSellValue: () => {
             return 2 + countCards('trade');
-        }
+        },
+        isCurrentPlayer: player => {
+            return player === get(currentPlayer);
+        },
+        getOpponentPlayer
     };
 }
