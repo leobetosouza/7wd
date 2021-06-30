@@ -56,6 +56,9 @@
 						{#if !blocked}
 							<button on:click|stopPropagation={handleBuyCard}>Buy (${$currentPlayer.getCardBuyValue(card)})</button>
 							<button on:click|stopPropagation={handleSellCard}>Sell (${$currentPlayer.getCardSellValue(card)})</button>
+						{:else}
+							<button disabled>Buy (${$currentPlayer.getCardBuyValue(card)})</button>
+							<button disabled>Sell (${$currentPlayer.getCardSellValue(card)})</button>
 						{/if}
 						<button on:click|stopPropagation={cancelZoom}>Cancel</button>
 					</div>
