@@ -83,7 +83,7 @@ export default ({ name, color }) => {
         return [...acc, science];
     }, []).length);
 
-    const countCards = testType => get(tableau).reduce((acc, { type }) => testType === type ? acc + 1 : acc, 0)
+    const countCards = (testType, tableau) => get(tableau).reduce((acc, { type }) => testType === type ? acc + 1 : acc, 0)
     
     return {
         tableau,
@@ -93,7 +93,36 @@ export default ({ name, color }) => {
         stock, chain, differentSciences,
         name: writable(name),
         color: colorName,
-        takeCard: card => tableau.update(arr => [card, ...arr]),
+        takeCard: card => {
+            tableau.update(arr => [card, ...arr]);
+
+            if (card.effects['foreach-card']?.where === "your-city") {
+                const count = countCards(card.effects['foreach-card'].type, tableau);
+                const newCoins = card.effects['foreach-card'].reward.coins || 0;
+                const gain = count * newCoins;
+                console.log(count, newCoins)
+                if (gain) coins.update(c => c + gain);
+            }
+
+            if (card.effects['foreach-card']?.where === "most-of-type-city") {
+
+                const countCardsInTableau = tableau => Array.isArray(card.effects['foreach-card'].type)
+                    ? card.effects['foreach-card'].type.reduce((acc, type) => acc + countCards(type, tableau), 0)
+                    : countCards(card.effects['foreach-card'].type, tableau);
+
+                const currentPlayerCount = countCardsInTableau(tableau);
+                const opponentPlayerCount = countCardsInTableau(getOpponentPlayer().tableau);
+
+                const newCoins = card.effects['foreach-card'].reward.coins || 0;
+                
+                const gain = currentPlayerCount >= opponentPlayerCount
+                    ? currentPlayerCount * newCoins
+                    : opponentPlayerCount * newCoins;
+                
+                if (gain) coins.update(c => c + gain);
+
+            }
+        },
         takeDebit: debit => {
             const $balance = get(balance);
 
@@ -101,7 +130,7 @@ export default ({ name, color }) => {
             else throw new Error('Not enougth coins');
         },
         tradeCard: () => {
-            const tradeValue = countCards('trade');
+            const tradeValue = countCards('trade', tableau);
 
             coins.update(c => c + tradeValue + 2);
         },
@@ -127,7 +156,7 @@ export default ({ name, color }) => {
             return accCost + (cost.coins || 0);
         },
         getCardSellValue: () => {
-            return 2 + countCards('trade');
+            return 2 + countCards('trade', tableau);
         },
         isCurrentPlayer: player => {
             return player === get(currentPlayer);
