@@ -4,7 +4,7 @@
 	import PlayerTableau from './components/player/PlayerTableau.svelte';
 	import MainTable from './components/table/MainTable.svelte';
 	
-	import { agePromise, currentAgeName, playerOne, playerTwo, reserve, discard } from './stores';
+	import { currentPlayer, agePromise, currentAgeName, playerOne, playerTwo, reserve, discard } from './stores';
 
 	import { createPlayers, setupNextAge } from './actions';
 
@@ -37,7 +37,7 @@
 			<p>waiting cards...</p>
 		{:then}
 		<p style="margin-top: 0">Reserve: {$reserve.length} | Discard: {$discard.length}</p>
-		<section class="gametable">
+		<section class="gametable" style="--bgcolor:{$currentPlayer.getColor()}">
 			<PlayerTableau player={$playerOne} />
 			<PlayerTableau player={$playerTwo} />
 			<MainTable />
@@ -58,7 +58,7 @@
 	}
 
 	.gametable {
-		background: gray;
+		background: var(--bgcolor);
 		display: grid;
 		grid-gap: 1rem;
 

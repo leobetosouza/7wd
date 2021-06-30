@@ -8,7 +8,7 @@
     const { tableau, color, coins, vps, name, shields, stone, wood, clay, papyrus, glass, differentSciences } = player;
 </script>
 
-<section class="player-tableau player-color-{$color} {$currentPlayer.isCurrentPlayer(player) ? 'player-tableau-active' : '' }">
+<section class="player-tableau player-color-{$color} {$currentPlayer.isCurrentPlayer(player) ? 'player-tableau-active__' : '' }">
     <h1>{$name}</h1>
     <p style="background: whitesmoke">
         Cards: {$tableau.length}

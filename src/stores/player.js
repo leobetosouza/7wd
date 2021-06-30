@@ -9,6 +9,7 @@ const getOpponentPlayer = () => {
 };
 
 export default ({ name, color }) => {
+    const colorName = writable(color);
     const tableau = writable([]);
     const coins = writable(7);
 
@@ -91,7 +92,7 @@ export default ({ name, color }) => {
         stone, wood, clay, glass, papyrus,
         stock, chain, differentSciences,
         name: writable(name),
-        color: writable(color),
+        color: colorName,
         takeCard: card => tableau.update(arr => [card, ...arr]),
         takeDebit: debit => {
             const $balance = get(balance);
@@ -131,6 +132,7 @@ export default ({ name, color }) => {
         isCurrentPlayer: player => {
             return player === get(currentPlayer);
         },
-        getOpponentPlayer
+        getOpponentPlayer,
+        getColor: () => get(colorName)
     };
 }
