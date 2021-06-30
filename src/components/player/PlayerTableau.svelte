@@ -24,7 +24,7 @@
     <div class="card-stack">
     {#each $tableau as card, i}
         <div class="card-wraper" style="--top:-{10 * i}rem">
-            <CardPresenter {card} />
+            <CardPresenter {card} noActions />
         </div>
     {/each}
     </div>

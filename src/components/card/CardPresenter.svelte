@@ -11,6 +11,7 @@
 
 	export let turned = false;
 	export let blocked = false;
+	export let noActions = false;
 
 	let scaled = false;
 
@@ -53,12 +54,14 @@
 				<CardCost cost={card.cost} />
 				{#if scaled}
 					<div class="card-actions">
-						{#if !blocked}
-							<button on:click|stopPropagation={handleBuyCard}>Buy (${$currentPlayer.getCardBuyValue(card)})</button>
-							<button on:click|stopPropagation={handleSellCard}>Sell (${$currentPlayer.getCardSellValue(card)})</button>
-						{:else}
-							<button disabled>Buy (${$currentPlayer.getCardBuyValue(card)})</button>
-							<button disabled>Sell (${$currentPlayer.getCardSellValue(card)})</button>
+						{#if !noActions}
+							{#if !blocked}
+								<button on:click|stopPropagation={handleBuyCard}>Buy (${$currentPlayer.getCardBuyValue(card)})</button>
+								<button on:click|stopPropagation={handleSellCard}>Sell (${$currentPlayer.getCardSellValue(card)})</button>
+							{:else}
+								<button disabled>Buy (${$currentPlayer.getCardBuyValue(card)})</button>
+								<button disabled>Sell (${$currentPlayer.getCardSellValue(card)})</button>
+							{/if}
 						{/if}
 						<button on:click|stopPropagation={cancelZoom}>Cancel</button>
 					</div>
