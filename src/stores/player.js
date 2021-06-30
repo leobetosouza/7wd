@@ -162,6 +162,7 @@ export default ({ name, color }) => {
             return player === get(currentPlayer);
         },
         getOpponentPlayer,
-        getColor: () => get(colorName)
+        getColor: () => get(colorName),
+        getBalance: () => get(balance)
     };
 }

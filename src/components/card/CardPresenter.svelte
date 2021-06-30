@@ -5,6 +5,7 @@
 
 	import CardEffects from './CardEffects.svelte';
 	import CardCost from './CardCost.svelte';
+	import CardBuyButton from './CardBuyButton.svelte';
 
     export let card = null;
 	export let invisible = false;
@@ -56,11 +57,11 @@
 					<div class="card-actions">
 						{#if !noActions}
 							{#if !blocked}
-								<button on:click|stopPropagation={handleBuyCard}>Buy (${$currentPlayer.getCardBuyValue(card)})</button>
-								<button on:click|stopPropagation={handleSellCard}>Sell (${$currentPlayer.getCardSellValue(card)})</button>
+								<CardBuyButton onClick={handleBuyCard} buyValue={$currentPlayer.getCardBuyValue(card)} currentPlayerBalance={$currentPlayer.getBalance()} />		
+								<button on:click|stopPropagation={handleSellCard}>Sell (+${$currentPlayer.getCardSellValue(card)})</button>
 							{:else}
-								<button disabled>Buy (${$currentPlayer.getCardBuyValue(card)})</button>
-								<button disabled>Sell (${$currentPlayer.getCardSellValue(card)})</button>
+								<CardBuyButton disabled buyValue={$currentPlayer.getCardBuyValue(card)} currentPlayerBalance={$currentPlayer.getBalance()} />
+								<button disabled>Sell (+${$currentPlayer.getCardSellValue(card)})</button>
 							{/if}
 						{/if}
 						<button on:click|stopPropagation={cancelZoom}>Cancel</button>
