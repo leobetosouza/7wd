@@ -31,6 +31,7 @@
 	.cards-table {
 		grid-area: maintable;
 		overflow: hidden;
+		padding-top: 5rem;
 	}
 
 	.table-row {

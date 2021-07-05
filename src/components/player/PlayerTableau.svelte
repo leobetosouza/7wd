@@ -34,6 +34,7 @@
 <style>
     .player-tableau {
         grid-area: var(--area);
+        overflow: hidden;
     }
     .player-color-red {
 		background: red;
