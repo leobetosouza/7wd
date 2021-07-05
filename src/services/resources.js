@@ -56,3 +56,10 @@ export const get3rdAgeTableLayout = async () => {
 
     return resources['table-layouts']['3rd-age'];
 };
+
+export const getMilitaryBoardLayout = async () => {
+    const resources = await resourcesPromise;
+
+    return resources['military-board'];
+};
+

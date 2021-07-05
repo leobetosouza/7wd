@@ -1,7 +1,7 @@
 import { get } from 'svelte/store';
 
-import { get1stAgeCards, get2ndAgeCards, get3rdAgeCards, get1stAgeTableLayout, get2ndAgeTableLayout, get3rdAgeTableLayout } from '../services/resources';
-import { agePromise, currentAgeName, currentPlayer, playerOne, playerTwo, scientificSupremacist, activeCards, removedCardSlots, reserve, discard, tableLayout, hasGameEnded } from '../stores';
+import { get1stAgeCards, get2ndAgeCards, get3rdAgeCards, get1stAgeTableLayout, get2ndAgeTableLayout, get3rdAgeTableLayout, getMilitaryBoardLayout } from '../services/resources';
+import { agePromise, currentAgeName, currentPlayer, playerOne, playerTwo, scientificSupremacist, activeCards, removedCardSlots, reserve, discard, tableLayout, hasGameEnded, militaryLayout } from '../stores';
 import Player from '../stores/player';
 
 let playerControl;
@@ -31,10 +31,27 @@ export const createPlayers = (playerOneData, playerTwoData) => {
     playerControl = createPlayerControl(playerOne, playerTwo);
 
 	currentPlayer.set(playerControl.getCurrent());
+};
+
+const prepareMilitaryBoard = async () => {
+    const rawLayout = await getMilitaryBoardLayout();
+
+    const layout = [
+        ...rawLayout.reduce((acc, o) => [{...o}, ...acc], []),
+        { start: true },
+        ...rawLayout
+    ];
+
+    militaryLayout.set(layout);
 }
 
-const prepareAge = (getAgeCards, getTableLayout, hasPreAgeSetup = false) => async () => {
-    if (hasPreAgeSetup) {
+const prepareAge = (getAgeCards, getTableLayout, is1stAge = false) => async () => {
+    const promises = [];
+
+    if (is1stAge) {
+        const militaryBoardPromise = prepareMilitaryBoard();
+        promises.push(militaryBoardPromise);
+    } else {
         // hasGameEnded.set(true);
     }
 
@@ -43,25 +60,29 @@ const prepareAge = (getAgeCards, getTableLayout, hasPreAgeSetup = false) => asyn
         activeCards.set(res.cards);
     });
 
+    promises.push(cardsPromise);
+
     const tableLayoutPromise = getTableLayout().then(layout => {
         tableLayout.set(layout);
     });
 
-    agePromise.set(Promise.all([ cardsPromise, tableLayoutPromise ]));
+    promises.push(tableLayoutPromise);
+
+    agePromise.set(Promise.all(promises));
 };
 
 const agesList = [
     {
         name: '1st Age',
-        prepare: prepareAge(get1stAgeCards, get1stAgeTableLayout),
+        prepare: prepareAge(get1stAgeCards, get1stAgeTableLayout, true),
     },
     {
         name: '2nd Age',
-        prepare: prepareAge(get2ndAgeCards, get2ndAgeTableLayout, true),
+        prepare: prepareAge(get2ndAgeCards, get2ndAgeTableLayout),
     },
     {
         name: '3rd Age',
-        prepare: prepareAge(get3rdAgeCards, get3rdAgeTableLayout, true),
+        prepare: prepareAge(get3rdAgeCards, get3rdAgeTableLayout),
     }
 ];
 

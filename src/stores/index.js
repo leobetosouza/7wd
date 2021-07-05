@@ -60,3 +60,5 @@ export const activeCards = (() => {
         }
     };
 })();
+
+export const militaryLayout = writable([]);

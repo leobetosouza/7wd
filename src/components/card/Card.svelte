@@ -7,6 +7,7 @@
     export let slot;
 	export let slotIndex;
 	export let rowName;
+    export let templateLine;
 
 	$: hasBeenRemoved = (row, index) =>
         !!$removedCardSlots.find(card => card.row === row && card.index === index);
@@ -38,6 +39,7 @@
         blocked={hasCover(slot)}
         card={activeCards.next()}
         turned={slot.turned}
+        templateLine={templateLine}
     />
 {:else}
     <CardPresenter invisible />

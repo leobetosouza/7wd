@@ -12,17 +12,18 @@ export default ({ name, color }) => {
     const colorName = writable(color);
     const tableau = writable([]);
     const coins = writable(7);
+    const militaryVPs = writable(0);
 
     const balance = derived([tableau, coins], ([$tableau, $coins]) => $tableau.reduce((acc, { effects }) => {
         const { coins = 0 } = effects;
         return acc + coins
     }, $coins));
 
-    const vps = derived(tableau, $tableau => $tableau.reduce((acc, { effects }) => {
+    const vps = derived([tableau, militaryVPs], ([$tableau, $militaryVPs]) => $tableau.reduce((acc, { effects }) => {
         const { vp = 0 } = effects;
 
         return acc + vp;
-    }, 0));
+    }, $militaryVPs));
     
     const shields = derived(tableau, $tableau => $tableau.reduce((acc, { effects }) => {
         const { shields = 0 } = effects;
@@ -93,6 +94,7 @@ export default ({ name, color }) => {
         stock, chain, differentSciences,
         name: writable(name),
         color: colorName,
+        setMilitaryVPs: vps => militaryVPs.set(vps),
         getEndGameVPs: () => {
             const cardsVPs = get(vps);
             const coinsVPs = Math.floor(get(balance)/3);

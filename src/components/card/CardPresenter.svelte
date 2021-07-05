@@ -9,6 +9,7 @@
 
     export let card = null;
 	export let invisible = false;
+	export let templateLine = 0;
 
 	export let turned = false;
 	export let blocked = false;
@@ -38,12 +39,14 @@
         dispatch('buy_card', { card });
     };
 
+	let zoomCorrection = (templateLine - 3) * -1;
+
 </script>
 
 {#if invisible}
 	<div class="card card-invisible">&nbsp</div>
 {:else}
-	<div class="card {scaled ? 'card-zoom' : ''} { turned ? 'card-blocked' : ''}">
+	<div style="--zoom-top:{zoomCorrection}rem" class="card {scaled ? 'card-zoom' : ''} { turned ? 'card-blocked' : ''}">
 		{#if turned}
 			<div class="card-back {card.type === 'guild' ? 'card-age-guild' : `card-age-${card.age}`}">
 				<p class="card-age">{card.type === 'guild' ? 'G' : card.age}</p>
@@ -88,7 +91,7 @@
 	}
 
 	.card-zoom {
-		transform: scale(2.5);
+		transform: scale(2.5) translateY(var(--zoom-top));
 		z-index: 3;
 		cursor: auto;
 	}

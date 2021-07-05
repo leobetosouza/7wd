@@ -51,15 +51,12 @@
 					</header>
 					<PlayerTableau player={$playerOne} gridArea="player1" />
 					<PlayerTableau player={$playerTwo} gridArea="player2"/>
-					<MilitaryBoard />
+					<!-- <MilitaryBoard /> -->
 					{#if $hasGameEnded}
 						<EndGameTable />
 					{:else}
 						<MainTable />
 					{/if}
-					<footer class="footer">
-						7WD
-					</footer>
 				</section>
 		{:catch error}
 			<p style="color: red">{error.message}</p>
@@ -79,10 +76,11 @@
 	.gametable {
 		background: var(--bgcolor);
 		display: grid;
+		overflow: hidden;
 		
-		grid-template-areas: "header header header" "player1 military player2" "player1 maintable player2" "footer footer footer";
+		grid-template-areas: "header header header" "player1 military player2" "player1 maintable player2";
 		grid-template-columns: 15% auto 15%;
-		grid-template-rows: 8% 5% auto 3%;
+		grid-template-rows: 5rem 2.8rem auto;
 
 		justify-content: stretch;
 

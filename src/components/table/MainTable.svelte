@@ -13,13 +13,14 @@
 </script>
 
 <section class="cards-table">
-    {#each Object.entries($tableLayout) as [name, row]}
-        <div class="table-row {row.shifted ? 'table-row-shifted' : ''}">
-            {#each row.slots as slot, i}
+    {#each Object.entries($tableLayout) as [name, row], i}
+        <div style="--row-top-correction: { -7 * i }rem" class="table-row {row.shifted ? 'table-row-shifted' : ''}">
+            {#each row.slots as slot, j}
                 <Card
                     {slot}
                     rowName={name}
-                    slotIndex={i}
+                    slotIndex={j}
+					templateLine={i}
                 />
             {/each}
         </div>
@@ -30,48 +31,19 @@
 
 	.cards-table {
 		grid-area: maintable;
-		overflow: hidden;
-		padding-top: 5rem;
+		padding-top: 1rem;
 	}
 
 	.table-row {
 		display:flex;
 		flex-wrap: wrap;
 		justify-content: center;
-
 		position: relative;
+		top: var(--row-top-correction);
 	}
 
 	.table-row-shifted {
 		left: 5rem;
-	}
-
-	.table-row:first-of-type {
-		top: 0;
-	}
-
-	.table-row:nth-of-type(2) {
-		top: -7rem;
-	}
-
-	.table-row:nth-of-type(3) {
-		top: -14rem;
-	}
-
-	.table-row:nth-of-type(4) {
-		top: -21rem;
-	}
-
-	.table-row:nth-of-type(5) {
-		top: -28rem;
-	}
-
-	.table-row:nth-of-type(6) {
-		top: -36rem;
-	}
-
-	.table-row:nth-of-type(7) {
-		top: -43rem;
 	}
 
 </style>

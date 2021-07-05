@@ -708,5 +708,16 @@
                 "slots": [ null, null, {}, {}, null, null ] 
             }
         }
-    }
+    },
+    "military-board": [
+        { "vp": 2 },
+        { "vp": 2 },
+        { "vp": 5, "debit": 3 },
+        { "vp": 5, "debit": 3 },
+        { "vp": 5, "debit": 3 },
+        { "vp": 10, "debit": 5 },
+        { "vp": 10, "debit": 5 },
+        { "vp": 10, "debit": 5 },
+        { "victory": true }
+    ]
 }
