@@ -3,8 +3,6 @@
     export let buyValue;
     export let currentPlayerBalance;
     export let onClick = () => {};
-
-
 </script>
 
 {#if buyValue <= currentPlayerBalance}

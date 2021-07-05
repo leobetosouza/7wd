@@ -93,31 +93,74 @@ export default ({ name, color }) => {
         stock, chain, differentSciences,
         name: writable(name),
         color: colorName,
+        getEndGameVPs: () => {
+            const cardsVPs = get(vps);
+            const coinsVPs = Math.floor(get(balance)/3);
+
+            const endGameEffectsVPs = get(tableau).reduce((acc, {effects}) => {
+                const foreachEffect = effects['foreach-card'];
+
+                if (foreachEffect?.where === "most-of-type-city") {
+
+                    if (foreachEffect.type === 'coins') {
+
+                        const currentPlayerCoins = get(balance);
+                        const opponentCoins = get(getOpponentPlayer().balance);
+
+                        return acc + (
+                            foreachEffect.reward.vp * 
+                            Math.floor(
+                                Math.max(currentPlayerCoins, opponentCoins) / foreachEffect['divide-count-by']
+                            )
+                        );
+
+                    }
+
+                    if (foreachEffect.reward.vp) {
+                        const countCardsInTableau = tableau => Array.isArray(foreachEffect.type)
+                            ? foreachEffect.type.reduce((acc, type) => acc + countCards(type, tableau), 0)
+                            : countCards(foreachEffect.type, tableau);
+
+                        const currentPlayerCount = countCardsInTableau(tableau);
+                        const opponentPlayerCount = countCardsInTableau(getOpponentPlayer().tableau);
+                        const gain = Math.max(currentPlayerCount, opponentPlayerCount) * foreachEffect.reward.vp;
+                        
+                        return acc + gain;
+                    }
+                }
+
+                return acc;
+
+            }, 0);
+
+            return cardsVPs + coinsVPs + endGameEffectsVPs;
+
+        },
         takeCard: card => {
             tableau.update(arr => [card, ...arr]);
 
-            if (card.effects['foreach-card']?.where === "your-city") {
-                const count = countCards(card.effects['foreach-card'].type, tableau);
-                const newCoins = card.effects['foreach-card'].reward.coins || 0;
+            const foreachEffect = card.effects['foreach-card'];
+
+            if (foreachEffect?.where === "your-city") {
+                const count = countCards(foreachEffect.type, tableau);
+                const newCoins = foreachEffect.reward.coins || 0;
                 const gain = count * newCoins;
-                console.log(count, newCoins)
+
                 if (gain) coins.update(c => c + gain);
             }
 
-            if (card.effects['foreach-card']?.where === "most-of-type-city") {
+            if (foreachEffect?.where === "most-of-type-city" && foreachEffect?.reward?.coins) {
 
-                const countCardsInTableau = tableau => Array.isArray(card.effects['foreach-card'].type)
-                    ? card.effects['foreach-card'].type.reduce((acc, type) => acc + countCards(type, tableau), 0)
-                    : countCards(card.effects['foreach-card'].type, tableau);
+                const countCardsInTableau = tableau => Array.isArray(foreachEffect.type)
+                    ? foreachEffect.type.reduce((acc, type) => acc + countCards(type, tableau), 0)
+                    : countCards(foreachEffect.type, tableau);
 
                 const currentPlayerCount = countCardsInTableau(tableau);
                 const opponentPlayerCount = countCardsInTableau(getOpponentPlayer().tableau);
 
-                const newCoins = card.effects['foreach-card'].reward.coins || 0;
+                const newCoins = foreachEffect.reward.coins;
                 
-                const gain = currentPlayerCount >= opponentPlayerCount
-                    ? currentPlayerCount * newCoins
-                    : opponentPlayerCount * newCoins;
+                const gain = Math.max(currentPlayerCount, opponentPlayerCount) * newCoins;
                 
                 if (gain) coins.update(c => c + gain);
 

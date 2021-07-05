@@ -19,6 +19,8 @@ export const currentPlayer = (() => {
 export const playerOne = writable({});
 export const playerTwo = writable({});
 
+export const hasGameEnded = writable(false);
+
 export const removedCardSlots = writable([]);
 export const tableLayout = writable([]);
 export const discard = (() => {

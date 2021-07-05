@@ -1,7 +1,7 @@
 import { get } from 'svelte/store';
 
 import { get1stAgeCards, get2ndAgeCards, get3rdAgeCards, get1stAgeTableLayout, get2ndAgeTableLayout, get3rdAgeTableLayout } from '../services/resources';
-import { agePromise, currentAgeName, currentPlayer, playerOne, playerTwo, activeCards, removedCardSlots, reserve, discard, tableLayout } from '../stores';
+import { agePromise, currentAgeName, currentPlayer, playerOne, playerTwo, activeCards, removedCardSlots, reserve, discard, tableLayout, hasGameEnded } from '../stores';
 import Player from '../stores/player';
 
 let playerControl;
@@ -33,7 +33,11 @@ export const createPlayers = (playerOneData, playerTwoData) => {
 	currentPlayer.set(playerControl.getCurrent());
 }
 
-const prepareAge = (getAgeCards, getTableLayout) => async () => {
+const prepareAge = (getAgeCards, getTableLayout, hasPreAgeSetup = false) => async () => {
+    if (hasPreAgeSetup) {
+        hasGameEnded.set(true);
+    }
+
     const cardsPromise = getAgeCards().then(res => {
         reserve.add(...res.reserve);
         activeCards.set(res.cards);
@@ -53,11 +57,11 @@ const agesList = [
     },
     {
         name: '2nd Age',
-        prepare: prepareAge(get2ndAgeCards, get2ndAgeTableLayout),
+        prepare: prepareAge(get2ndAgeCards, get2ndAgeTableLayout, true),
     },
     {
         name: '3rd Age',
-        prepare: prepareAge(get3rdAgeCards, get3rdAgeTableLayout),
+        prepare: prepareAge(get3rdAgeCards, get3rdAgeTableLayout, true),
     }
 ];
 
@@ -78,8 +82,8 @@ export const setupNextAge = async () => {
 
         currentAgeName.set(age.value.name);
     } else {
-        currentAgeName.set('GAME&apos;s END');
-    }	
+        hasGameEnded.set(true);
+    }
 };
 
 export const buyCard = ({ card, slot }) => {
