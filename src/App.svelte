@@ -51,10 +51,10 @@
 					</header>
 					<PlayerTableau player={$playerOne} gridArea="player1" />
 					<PlayerTableau player={$playerTwo} gridArea="player2"/>
+					<MilitaryBoard />
 					{#if $hasGameEnded}
 						<EndGameTable />
 					{:else}
-						<MilitaryBoard />
 						<MainTable />
 					{/if}
 					<footer class="footer">
