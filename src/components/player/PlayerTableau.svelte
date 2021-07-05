@@ -4,11 +4,12 @@
     import { currentPlayer } from '../../stores';
 
     export let player;
+    export let gridArea;
 
     const { tableau, color, coins, vps, name, shields, stone, wood, clay, papyrus, glass, differentSciences } = player;
 </script>
 
-<section class="player-tableau player-color-{$color} {$currentPlayer.isCurrentPlayer(player) ? 'player-tableau-active' : '' }">
+<section style="--area: {gridArea}" class="player-tableau player-color-{$color} {$currentPlayer.isCurrentPlayer(player) ? 'player-tableau-active' : '' }">
     <h1>{$name}</h1>
     <p style="background: whitesmoke">
         Cards: {$tableau.length}
@@ -31,6 +32,9 @@
 </section>
 
 <style>
+    .player-tableau {
+        grid-area: var(--area);
+    }
     .player-color-red {
 		background: red;
         border: 5px solid red;

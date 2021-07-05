@@ -3,7 +3,8 @@
 
 	import PlayerTableau from './components/player/PlayerTableau.svelte';
 	import MainTable from './components/table/MainTable.svelte';
-	import EndGameTable from './components/endgame/EndGameTable.svelte'
+	import EndGameTable from './components/endgame/EndGameTable.svelte';
+	import MilitaryBoard from './components/MilitaryBoard.svelte';
 	
 	import { currentPlayer, agePromise, currentAgeName, playerOne, playerTwo, reserve, discard, hasGameEnded } from './stores';
 
@@ -22,6 +23,8 @@
 			{ name: 'Player 1', color: 'red' },
 			{ name: 'Player 2', color: 'blue' }
 		);
+
+		startGame();
 	});
 
 	beforeUpdate(() => {
@@ -33,9 +36,7 @@
 </script>
 
 <main>
-	{#if isGameStarted}
-		<h1 style="margin: 0">{@html ($hasGameEnded ? 'GAME&apos;s END' : $currentAgeName)}</h1>
-	{:else}
+	{#if !isGameStarted}
 		<button on:click|once={startGame}>Start Game</button>
 	{/if}
 
@@ -43,15 +44,22 @@
 		{#await $agePromise}
 			<p>waiting cards...</p>
 		{:then}
-				<p style="margin-top: 0">Reserve: {$reserve.length} | Discard: {$discard.length}</p>
 				<section class="gametable" style="--bgcolor:{$currentPlayer.getColor()}">
-					<PlayerTableau player={$playerOne} />
-					<PlayerTableau player={$playerTwo} />
+					<header class="header">
+						<h1 style="margin: 0">{@html ($hasGameEnded ? 'GAME&apos;s END' : $currentAgeName)}</h1>
+						Reserve: {$reserve.length} | Discard: {$discard.length}
+					</header>
+					<PlayerTableau player={$playerOne} gridArea="player1" />
+					<PlayerTableau player={$playerTwo} gridArea="player2"/>
 					{#if $hasGameEnded}
 						<EndGameTable />
 					{:else}
+						<MilitaryBoard />
 						<MainTable />
 					{/if}
+					<footer class="footer">
+						7WD
+					</footer>
 				</section>
 		{:catch error}
 			<p style="color: red">{error.message}</p>
@@ -71,10 +79,32 @@
 	.gametable {
 		background: var(--bgcolor);
 		display: grid;
-		grid-gap: 1rem;
+		
+		grid-template-areas: "header header header" "player1 military player2" "player1 maintable player2" "footer footer footer";
+		grid-template-columns: 15% auto 15%;
+		grid-template-rows: 8% 5% auto 3%;
 
-		grid-template-areas: "player1 maintable player2";
-		grid-template-columns: 1fr auto 1fr;
+		justify-content: stretch;
+
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+	}
+
+	.header	{
+		grid-area: header;
+		background: #fff;
+		text-align: center;
+		padding: 8px 0;
+	}
+
+	.footer	{
+		grid-area: footer;
+		background: #000;
+		color: #fff;
+		text-align: center;
 	}
 
 

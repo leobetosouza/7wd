@@ -30,6 +30,7 @@
 
 	.cards-table {
 		grid-area: maintable;
+		overflow: hidden;
 	}
 
 	.table-row {
