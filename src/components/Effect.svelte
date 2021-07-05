@@ -3,18 +3,60 @@
     export let value;
     export let isMini = false;
     export let isCost = false;
+
+    const chainsTable = {
+        gear: 'A',
+        tower: 'B',
+        water: 'C',
+        drama: 'D',
+        sword: 'E',
+        horseshoe: 'F',
+        luna: 'G',
+        jar: 'H',
+        book: 'Y',
+        pillar: 'J',
+        harp: 'K',
+        barrel: 'L',
+        sun: 'M',
+        helmet: 'N',
+        temple: 'O',
+        lamp: 'P',
+        target: 'Q'
+    };
+
+    const sciencesTable = {
+        pestle: '&Theta;',
+        plummet: '&Delta;',
+        witring: '&Omega;',
+        wheel: '&Phi;',
+        sundial: '&Sigma;',
+        astrolabe: '&Pi;',
+        laws: '&Psi;'
+    };
+
+    const resourcesTable = {
+        wood: '木',
+        stone: '石',
+        clay: '垆',
+        glass: '玻',
+        papyrus: '纸',
+        shields: '战'
+    }
 </script>
 
 {#if ['wood', 'clay', 'stone', 'glass', 'papyrus', 'shields'].includes(effect)}
     {#each Array(value) as _ }
-        <spam class="resource-empty resource-{effect} {isCost ? 'resource-cost' : ''}" title="{effect}"></spam>
+        <span class="resource resource-{effect}" class:resource-cost={isCost} title={effect}>{resourcesTable[effect]}</span>
     {/each}
 {/if}
 {#if ["vp", "coins"].includes(effect)}
-    <spam class="resource-number resource-{effect} {isCost ? 'resource-cost' : ''} {isMini ? 'resource-mini' : ''}" title="{value} { effect === 'vp'  ? 'victory points' : effect}">{value}</spam>
+    <span class="resource-number resource-{effect}" class:resource-cost={isCost} class:resource-mini={isMini} title="{value} { effect === 'vp'  ? 'victory points' : effect}">{value}</span>
+{/if}
+{#if effect === "debit"}
+    <span class="resource-number resource-debit" class:resource-cost={isCost} class:resource-mini={isMini} title="Debit of -{value}">{value}</span>
 {/if}
 {#if effect === "science"}
-    <spam class="resource-empty resource-science resource-science-{value}" title="science symbol {value}"></spam>
+    <span class="resource-science resource-science-{value}" title="science symbol {value}">{@html sciencesTable[value]}</span>
 {/if}
 {#if effect === "stock"}
     {#if Array.isArray(value)}
@@ -22,7 +64,7 @@
             <svelte:self effect="stock" value={v} />
         {/each}
     {:else}
-        <spam class="resource-empty resource-stock resource-{value}"  title="Stock of {value}"></spam>
+        <span class="resource resource-stock resource-{value}"  title="Stock of {value}">{resourcesTable[value]}</span>
     {/if}
 {/if}
 {#if effect === "or"}
@@ -31,22 +73,27 @@
     {/each}
 {/if}
 {#if effect === "chain"}
-    <spam class="resource-chain resource-chain-{value} {isCost ? 'resource-cost' : 'resource-chain-top'}" title="chain symbol {value}"></spam>
+    <span class="resource-chain resource-chain-{value} {isCost ? 'resource-cost' : 'resource-chain-top'}" title="chain symbol {value}">{chainsTable[value]}</span>
 {/if}
 {#if effect === "foreach-card"}
-    <spam class="card-mini card-mini-{value.type}">
+    <span class="card-mini card-mini-{value.type}">
         {#each Object.entries(value.reward) as [e, v]}
             <svelte:self effect={e} value={v} isMini={true} />
         {/each}
-    </spam>
+    </span>
 {/if}
 
 <style>
     .resource-chain {
         background: #fff;
+        line-height: 1.2rem;
         height: 1.2rem;
         width: 1.2rem;
+        font-size: .8rem;
+        text-align: center;
+        vertical-align: middle;
         border: 2px solid #000;
+        font-weight: bold;
     }
     .resource-chain-top {
         position: absolute;
@@ -56,17 +103,24 @@
         border-right: 0;
     }
 
-    .resource-empty {
+    .resource {
         width: 1.1rem;
         height: 1.1rem;
+        line-height: 1.1rem;
+        font-size: .8rem;
+        text-align: center;
+        vertical-align: middle;
         border: 2px solid #000;
+        color: #000;
     }
 
     .resource-number {
-        padding: .3em .5rem;
         border: 2px solid #000;
         font-size: .8rem;
-        line-height: 1;
+        line-height: 1.2rem;
+        width: 1.2rem;
+        height: 1.2rem;
+        text-align: center;
         vertical-align: middle;
         border-radius: 50%;
     }
@@ -77,6 +131,7 @@
     .resource-stock::before {
         content: '1';
         background: goldenrod;
+        color: #000;
 
         position: absolute;
         top: -0.9rem;
@@ -84,16 +139,25 @@
 
         transform: scale(.7);
         
-        padding: .3em .5rem;
         border: 2px solid #000;
         font-size: .8rem;
-        line-height: 1;
+        line-height: 1.2rem;
+        width: 1.2rem;
+        height: 1.2rem;
         vertical-align: middle;
         border-radius: 50%;
     }
 
     .resource-science {
         background: lime;
+        line-height: 1.2rem;
+        height: 1.2rem;
+        width: 1.2rem;
+        font-size: .8rem;
+        text-align: center;
+        vertical-align: middle;
+        border: 2px solid #000;
+        font-weight: bold;
     }
 
     .resource-vp {
@@ -103,6 +167,12 @@
 
     .resource-coins {
         background: goldenrod;
+        color: #000;
+    }
+    
+    .resource-debit {
+        background: goldenrod;
+        border-color: #f00;
         color: #000;
     }
 
