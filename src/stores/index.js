@@ -18,6 +18,7 @@ export const currentPlayer = (() => {
 
 export const playerOne = writable({});
 export const playerTwo = writable({});
+export const scientificSupremacist = writable();
 
 export const hasGameEnded = writable(false);
 

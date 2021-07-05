@@ -1,7 +1,7 @@
 import { get } from 'svelte/store';
 
 import { get1stAgeCards, get2ndAgeCards, get3rdAgeCards, get1stAgeTableLayout, get2ndAgeTableLayout, get3rdAgeTableLayout } from '../services/resources';
-import { agePromise, currentAgeName, currentPlayer, playerOne, playerTwo, activeCards, removedCardSlots, reserve, discard, tableLayout, hasGameEnded } from '../stores';
+import { agePromise, currentAgeName, currentPlayer, playerOne, playerTwo, scientificSupremacist, activeCards, removedCardSlots, reserve, discard, tableLayout, hasGameEnded } from '../stores';
 import Player from '../stores/player';
 
 let playerControl;
@@ -35,7 +35,7 @@ export const createPlayers = (playerOneData, playerTwoData) => {
 
 const prepareAge = (getAgeCards, getTableLayout, hasPreAgeSetup = false) => async () => {
     if (hasPreAgeSetup) {
-        hasGameEnded.set(true);
+        // hasGameEnded.set(true);
     }
 
     const cardsPromise = getAgeCards().then(res => {
@@ -86,15 +86,25 @@ export const setupNextAge = async () => {
     }
 };
 
+const hasScientificSupremacy = ({ differentSciences }) => get(differentSciences) === 6;
+
 export const buyCard = ({ card, slot }) => {
     try {
         const $currentPlayer = get(currentPlayer);
+
         const cardCost = $currentPlayer.getCardBuyValue(card);
         if (cardCost) $currentPlayer.takeDebit(cardCost);
         
         removedCardSlots.update(arr => [ slot, ...arr ]);
         $currentPlayer.takeCard(card);
-        currentPlayer.set(playerControl.getNext());
+
+        if (hasScientificSupremacy($currentPlayer)) {
+            scientificSupremacist.set($currentPlayer);
+            hasGameEnded.set(true);
+        } else {
+            currentPlayer.set(playerControl.getNext());
+        }
+
     } catch(e) {
         console.error(e);
     }

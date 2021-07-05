@@ -2,8 +2,8 @@
     export let player;
     export let points;
     export let winer = false;
-    export let loser = false;
-
+    export let scientific = false;
+    console.log(player)
     const { name, color } = player;
 </script>
 
@@ -13,7 +13,11 @@
     {:else}
         <h1 class="player-name">{$name}</h1>
     {/if}
-    {points} VPs
+    {#if scientific}
+        {#if winer}Science Supremacy{:else}&mdash;{/if}
+    {:else}
+        {points} VPs
+    {/if}
 </section>
 
 <style>

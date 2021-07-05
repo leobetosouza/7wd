@@ -1,7 +1,7 @@
 <script>
 	import { onMount } from 'svelte';
 
-    import { currentPlayer, playerOne, playerTwo } from '../../stores';
+    import { currentPlayer, playerOne, playerTwo, scientificSupremacist } from '../../stores';
     import PlayerTable from './PlayerTable.svelte';
 
     let drawn;
@@ -13,7 +13,14 @@
     let playerOnePoints;
     let playerTwoPoints;
 
-    onMount(() => {
+    console.log('foooooo')
+    
+    if ($scientificSupremacist) {
+        loser = $scientificSupremacist === $playerTwo ?
+            $playerOne : $playerTwo;
+
+        console.log($scientificSupremacist, loser)
+    } else {
         playerOnePoints = $playerOne.getEndGameVPs();
         playerTwoPoints = $playerTwo.getEndGameVPs();
 
@@ -39,17 +46,22 @@
             
             currentPlayer.set(playerTwo);
         }
-    });
+    }
 
 </script>
 
 <section class="endgame-table">
-    {#if drawn != null}
-        <PlayerTable player={winer} points={winerPoints} winer />
-        <PlayerTable player={loser} points={loserPoints} loser />
-    {:else if drawn}
-        <PlayerTable player={$playerOne} points={playerOnePoints} />
-        <PlayerTable player={$playerTwo} points={playerTwoPoints} />
+    {#if $scientificSupremacist}
+        <PlayerTable player={$scientificSupremacist} scientific winer />
+        <PlayerTable player={loser} scientific />
+    {:else}
+        {#if drawn != null}
+            <PlayerTable player={winer} points={winerPoints} winer />
+            <PlayerTable player={loser} points={loserPoints} />
+        {:else if drawn}
+            <PlayerTable player={$playerOne} points={playerOnePoints} />
+            <PlayerTable player={$playerTwo} points={playerTwoPoints} />
+        {/if}
     {/if}
 </section>
 <style>
