@@ -1,5 +1,6 @@
 import { writable, derived, get } from 'svelte/store';
 import { currentPlayer, playerOne, playerTwo } from './index';
+import { permuteAcc } from '../utils';
 
 const getOpponentPlayer = () => {
     const $playerOne = get(playerOne);
@@ -84,7 +85,30 @@ export default ({ name, color }) => {
         return [...acc, science];
     }, []).length);
 
-    const countCards = (testType, tableau) => get(tableau).reduce((acc, { type }) => testType === type ? acc + 1 : acc, 0)
+    const orResources = derived(tableau, $tableau => {
+        console.log('or')
+        const ors = $tableau.reduce((acc, { effects }) => {
+            const { or } = effects;
+
+            if(!or) return acc;
+            
+            return [...acc, { ...or }];
+        }, []);
+
+        if (!ors.length) return ors;
+
+        const listOfGroups = ors.reduce((acc, o) => [
+            ...acc,
+            Object.entries(o)
+                .reduce((acc, [key, val]) => [...acc, {[key]: val}], [])
+        ], []);
+
+        return permuteAcc(listOfGroups);
+    });
+
+    const countCards = (testType, tableau) =>
+        get(tableau)
+            .reduce((acc, { type }) => testType === type ? acc + 1 : acc, 0);
     
     return {
         tableau,
@@ -186,19 +210,45 @@ export default ({ name, color }) => {
                 return 0;
             }
 
+            const $orResources = get(orResources);
+            const $stock = get(stock);
+
             const opponent = getOpponentPlayer();
-            let accCost = 0;
 
-            for (let [res, store] of [['stone', stone], ['wood', wood], ['clay', clay], ['glass', glass], ['papyrus', papyrus]]) {
-                const resCost = cost[res] - get(store);
+            const resources = [
+                ['stone', get(stone), get(opponent.stone)],
+                ['wood', get(wood), get(opponent.wood)],
+                ['clay', get(clay), get(opponent.clay)],
+                ['glass', get(glass), get(opponent.glass)],
+                ['papyrus', get(papyrus), get(opponent.papyrus)]
+            ];
 
-                if (resCost > 0) {
-                    if (get(stock).includes(res)) accCost += resCost;
-                    else accCost += resCost * (get(opponent[res]) + 2) 
+            const calcCost = orGroup => {
+                let accCost = 0;
+
+                for (let [resource, $store, $opponentStore] of resources) {
+                    const resourceCost =
+                        (cost[resource] || 0) -
+                        ($store + orGroup ? (orGroup[resource] || 0) : 0);
+
+                    if (resourceCost > 0) {
+                        accCost += ($stock.includes(resource)) ?
+                            resourceCost :
+                            resourceCost * ($opponentStore + 2);
+                    }
                 }
+
+                return accCost + (cost.coins || 0);
+            };
+
+            if (!$orResources.length) {
+                return calcCost();
             }
 
-            return accCost + (cost.coins || 0);
+            const orCosts = $orResources.map(calcCost);
+
+            return Math.min(...orCosts);
+
         },
         getCardSellValue: () => {
             return 2 + countCards('trade', tableau);
