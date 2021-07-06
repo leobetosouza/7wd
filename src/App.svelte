@@ -5,6 +5,7 @@
 	import MainTable from './components/table/MainTable.svelte';
 	import EndGameTable from './components/endgame/EndGameTable.svelte';
 	import MilitaryBoard from './components/MilitaryBoard.svelte';
+	import Konami from './components/Konami.svelte';
 	
 	import { currentPlayer, agePromise, currentAgeName, playerOne, playerTwo, reserve, discard, hasGameEnded } from './stores';
 
@@ -31,7 +32,7 @@
 		if ($hasGameEnded) {
 			console.log("FIM DO JOGO")
 		}
-	})
+	});
 
 </script>
 
@@ -48,6 +49,7 @@
 					<header class="header">
 						<h1 style="margin: 0">{@html ($hasGameEnded ? 'GAME&apos;s END' : $currentAgeName)}</h1>
 						Reserve: {$reserve.length} | Discard: {$discard.length}
+						<Konami />
 					</header>
 					<PlayerTableau player={$playerOne} gridArea="player1" />
 					<PlayerTableau player={$playerTwo} gridArea="player2"/>
