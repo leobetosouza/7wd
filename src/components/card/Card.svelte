@@ -1,46 +1,45 @@
 <script>
-	import { removedCardSlots, activeCards } from '../../stores';
-	import { buyCard, sellCard } from '../../actions';
+  import { removedCardSlots, activeCards } from '../../stores';
+  import { buyCard, sellCard } from '../../actions';
 
-    import CardPresenter from './CardPresenter.svelte';
+  import CardPresenter from './CardPresenter.svelte';
 
-    export let slot;
-	export let slotIndex;
-	export let rowName;
-    export let templateLine;
+  export let slot;
+  export let slotIndex;
+  export let rowName;
+  export let templateLine;
 
-	$: hasBeenRemoved = (row, index) =>
-        !!$removedCardSlots.find(card => card.row === row && card.index === index);
+  $: hasBeenRemoved = (row, index) =>
+    !!$removedCardSlots.find(card => card.row === row && card.index === index);
 
-	$: hasCover = ({ covered_by = [] }) => 
-        !!covered_by.length &&
-        !covered_by.every(([ row, index ]) => hasBeenRemoved(row, index));
+  $: hasCover = ({ covered_by = [] }) =>
+    !!covered_by.length &&
+    !covered_by.every(([row, index]) => hasBeenRemoved(row, index));
 
-    const handleBuyCard = ({ detail }) => {
-        const { card } = detail;
-        const slot = { row: rowName, index: slotIndex };
+  const handleBuyCard = ({ detail }) => {
+    const { card } = detail;
+    const slot = { row: rowName, index: slotIndex };
 
-        buyCard({ card, slot });
-    };
+    buyCard({ card, slot });
+  };
 
-    const handleSellCard = ({ detail }) => {
-        const { card } = detail;
-        const slot = { row: rowName, index: slotIndex };
+  const handleSellCard = ({ detail }) => {
+    const { card } = detail;
+    const slot = { row: rowName, index: slotIndex };
 
-        sellCard({ card, slot });
-    };
-
+    sellCard({ card, slot });
+  };
 </script>
 
 {#if slot && !hasBeenRemoved(rowName, slotIndex)}
-    <CardPresenter
-        on:sell_card={handleSellCard}
-        on:buy_card={handleBuyCard}
-        blocked={hasCover(slot)}
-        card={activeCards.next()}
-        turned={slot.turned}
-        templateLine={templateLine}
-    />
+  <CardPresenter
+    on:sell_card={handleSellCard}
+    on:buy_card={handleBuyCard}
+    blocked={hasCover(slot)}
+    card={activeCards.next()}
+    turned={slot.turned}
+    {templateLine}
+  />
 {:else}
-    <CardPresenter invisible />
+  <CardPresenter invisible />
 {/if}
