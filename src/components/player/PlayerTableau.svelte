@@ -17,9 +17,7 @@
 
 <section
   style="--area: {gridArea}"
-  class="player-tableau player-color-{$color} {$currentPlayer.isCurrentPlayer(
-    player
-  )
+  class="player-tableau player-color-{$color} {$currentPlayer === player
     ? 'player-tableau-active'
     : ''}"
 >
