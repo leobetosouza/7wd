@@ -69,19 +69,19 @@
                 <CardBuyButton
                   onClick={handleBuyCard}
                   buyValue={$currentPlayer.getCardBuyValue(card)}
-                  currentPlayerBalance={$currentPlayer.getBalance()}
+                  currentPlayerBalance={$currentPlayer.$resources.balance}
                 />
                 <button on:click|stopPropagation={handleSellCard}
-                  >Sell (+${$currentPlayer.getCardSellValue(card)})</button
+                  >Sell (+${$currentPlayer.cardTradeValue})</button
                 >
               {:else}
                 <CardBuyButton
                   disabled
                   buyValue={$currentPlayer.getCardBuyValue(card)}
-                  currentPlayerBalance={$currentPlayer.getBalance()}
+                  currentPlayerBalance={$currentPlayer.$resources.balance}
                 />
                 <button disabled
-                  >Sell (+${$currentPlayer.getCardSellValue(card)})</button
+                  >Sell (+${$currentPlayer.cardTradeValue})</button
                 >
               {/if}
             {/if}

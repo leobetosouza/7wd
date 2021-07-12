@@ -10,6 +10,17 @@ export const shuffle = array => {
 export const delay = async ms =>
   new Promise(resolve => setTimeout(() => resolve(), ms));
 
+export const listOfGroups = list => list.reduce(
+  (acc, o) => [
+    ...acc,
+    Object.entries(o).reduce(
+      (acc, [key, val]) => [...acc, { [key]: val }],
+      []
+    ),
+  ],
+  []
+);
+
 export const accObjs = (o1, o2) => {
   const entries = Object.entries(o2);
   const res = { ...o1 };

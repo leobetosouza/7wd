@@ -16,6 +16,7 @@ import {
   playerOne,
   playerTwo,
   scientificSupremacist,
+  militarySupremacist,
   activeCards,
   removedCardSlots,
   reserve,
@@ -23,7 +24,9 @@ import {
   tableLayout,
   hasGameEnded,
   militaryLayout,
+  conflictPawnIndex,
 } from '../stores';
+
 import Player from '../stores/player';
 
 let playerControl;
@@ -46,8 +49,8 @@ const createPlayerControl = (...players) => {
 };
 
 export const createPlayers = (playerOneData, playerTwoData) => {
-  playerOne.set(Player(playerOneData));
-  playerTwo.set(Player(playerTwoData));
+  playerOne.set(new Player(playerOneData));
+  playerTwo.set(new Player(playerTwoData));
 
   playerControl = createPlayerControl(playerOne, playerTwo);
 
@@ -96,8 +99,8 @@ const prepareAge =
 
 const agesList = [
   {
-    name: '1st Age',
-    prepare: prepareAge(get1stAgeCards, get1stAgeTableLayout, true),
+     name: '1st Age',
+     prepare: prepareAge(get1stAgeCards, get1stAgeTableLayout, true),
   },
   {
     name: '2nd Age',
@@ -128,6 +131,21 @@ export const setupNextAge = async () => {
   }
 };
 
+
+export const checkMilitarySupremacy = () => {
+  const $conflictPawnIndex = get(conflictPawnIndex);
+
+  if ($conflictPawnIndex <= 0) {
+    militarySupremacist.set(get(playerTwo));
+    hasGameEnded.set(true);
+  };
+
+  if ($conflictPawnIndex >= 18) {
+    militarySupremacist.set(get(playerOne));
+    hasGameEnded.set(true);
+  }
+}
+
 const hasScientificSupremacy = ({ differentSciences }) =>
   get(differentSciences) === 6;
 
@@ -136,7 +154,7 @@ export const buyCard = ({ card, slot }) => {
     const $currentPlayer = get(currentPlayer);
 
     const cardCost = $currentPlayer.getCardBuyValue(card);
-    if (cardCost) $currentPlayer.takeDebit(cardCost);
+    if (cardCost) $currentPlayer.pay(cardCost);
 
     removedCardSlots.update(arr => [slot, ...arr]);
     $currentPlayer.takeCard(card);

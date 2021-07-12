@@ -7,19 +7,12 @@
   export let gridArea;
 
   const {
-    tableau,
-    color,
-    coins,
-    vps,
     name,
-    shields,
-    stone,
-    wood,
-    clay,
-    papyrus,
-    glass,
-    differentSciences,
+    color,
+    tableau,
+    resources
   } = player;
+
 </script>
 
 <section
@@ -34,13 +27,13 @@
   <p style="background: whitesmoke">
     Cards: {$tableau.length}
     <br />
-    Coins: {$coins} | Shields: {$shields} | VPs: {$vps}
+    Coins: {$resources.balance} | Shields: {$resources.shields} | VPs: {$resources.vps}
     <br />
-    Stone: {$stone} | Wood: {$wood} | Clay: {$clay}
+    Stone: {$resources.stone} | Wood: {$resources.wood} | Clay: {$resources.clay}
     <br />
-    Glass: {$glass} | Papyrus: {$papyrus}
+    Glass: {$resources.glass} | Papyrus: {$resources.papyrus}
     <br />
-    Different Sciences: {$differentSciences}
+    Different Sciences: {$resources.differentSciences}
   </p>
   <div class="card-stack">
     {#each $tableau as card, i}

@@ -1,313 +1,264 @@
 import { writable, derived, get } from 'svelte/store';
 import { currentPlayer, playerOne, playerTwo } from './index';
-import { permuteAcc } from '../utils';
+import { permuteAcc, listOfGroups } from '../utils';
 
-const getOpponentPlayer = () => {
-  const $playerOne = get(playerOne);
+export default class Player {
+  tableau = writable([]);
+  _coins = writable(7);
+  _militaryVPs = writable(0);
+  _store = writable(this);
 
-  if (get(currentPlayer) === $playerOne) return get(playerTwo);
-  else return $playerOne;
-};
+  constructor ({ name, color }) {
+    this.color = writable(color);
+    this.name = writable(name);
+  }
 
-export default ({ name, color }) => {
-  const colorName = writable(color);
-  const tableau = writable([]);
-  const coins = writable(7);
-  const militaryVPs = writable(0);
+  resources = derived(
+    [this.tableau, this._coins, this._militaryVPs],
+    ([$tableau, $coins, $militaryVPs]) => {
+      const resources = $tableau.reduce(
+        (acc, { effects }) => {
+          const { chain, science, stock, or } = effects;
 
-  const balance = derived([tableau, coins], ([$tableau, $coins]) =>
-    $tableau.reduce((acc, { effects }) => {
-      const { coins = 0 } = effects;
-      return acc + coins;
-    }, $coins)
+          acc.balance += effects.coins ?? 0;
+          acc.vps += effects.vp ?? 0;
+          acc.shields += (effects.shields ? effects.shields + 9 : 0) ?? 0;
+          acc.wood += effects.wood ?? 0;
+          acc.stone += effects.stone ?? 0;
+          acc.clay += effects.clay ?? 0;
+          acc.glass += effects.glass ?? 0;
+          acc.papyrus += effects.papyrus ?? 0;
+
+          if (chain) acc.chains.push(chain);
+          if (science) acc.sciences.push(science);
+          if (or) acc.ors.push(or);
+
+          if (stock) {
+            if (Array.isArray(stock)) acc.stocks = [...acc.stocks, ...stock]
+            else acc.stocks.push(stock);
+          }
+
+          return acc;
+        },
+        {
+          balance: $coins, vps: $militaryVPs, shields: 0,
+          wood: 0, stone: 0, clay: 0, glass: 0, papyrus: 0,
+          sciences: [], ors: [], chains: [], stocks: []
+        }
+      );
+
+      resources.differentSciences = new Set(resources.sciences).size;
+
+      resources.permutedOrs = resources.ors.length
+        ? permuteAcc(listOfGroups(resources.ors))
+        : [];
+
+      delete resources.ors;
+
+      return resources;
+    }
   );
 
-  const vps = derived([tableau, militaryVPs], ([$tableau, $militaryVPs]) =>
-    $tableau.reduce((acc, { effects }) => {
-      const { vp = 0 } = effects;
+  getOpponentPlayer = () => {
+    const $playerOne = get(playerOne);
 
-      return acc + vp;
-    }, $militaryVPs)
-  );
+    return (get(currentPlayer) === $playerOne) ? get(playerTwo) : $playerOne;
+  };
 
-  const shields = derived(tableau, $tableau =>
-    $tableau.reduce((acc, { effects }) => {
-      const { shields = 0 } = effects;
-
-      return acc + shields;
-    }, 0)
-  );
-
-  const stone = derived(tableau, $tableau =>
-    $tableau.reduce((acc, { effects }) => {
-      const { stone = 0 } = effects;
-
-      return acc + stone;
-    }, 0)
-  );
-
-  const wood = derived(tableau, $tableau =>
-    $tableau.reduce((acc, { effects }) => {
-      const { wood = 0 } = effects;
-
-      return acc + wood;
-    }, 0)
-  );
-
-  const clay = derived(tableau, $tableau =>
-    $tableau.reduce((acc, { effects }) => {
-      const { clay = 0 } = effects;
-
-      return acc + clay;
-    }, 0)
-  );
-
-  const glass = derived(tableau, $tableau =>
-    $tableau.reduce((acc, { effects }) => {
-      const { glass = 0 } = effects;
-
-      return acc + glass;
-    }, 0)
-  );
-
-  const papyrus = derived(tableau, $tableau =>
-    $tableau.reduce((acc, { effects }) => {
-      const { papyrus = 0 } = effects;
-
-      return acc + papyrus;
-    }, 0)
-  );
-
-  const stock = derived(tableau, $tableau =>
-    $tableau.reduce((acc, { effects }) => {
-      const { stock } = effects;
-
-      if (!stock) return acc;
-      if (Array.isArray(stock)) return [...acc, ...stock];
-      return [...acc, stock];
-    }, [])
-  );
-
-  const chain = derived(tableau, $tableau =>
-    $tableau.reduce((acc, { effects }) => {
-      const { chain } = effects;
-
-      if (!chain) return acc;
-      return [...acc, chain];
-    }, [])
-  );
-
-  const differentSciences = derived(
-    tableau,
-    $tableau =>
-      $tableau.reduce((acc, { effects }) => {
-        const { science } = effects;
-
-        if (!science) return acc;
-        if (acc.includes(science)) return acc;
-        return [...acc, science];
-      }, []).length
-  );
-
-  const orResources = derived(tableau, $tableau => {
-    console.log('or');
-    const ors = $tableau.reduce((acc, { effects }) => {
-      const { or } = effects;
-
-      if (!or) return acc;
-
-      return [...acc, { ...or }];
-    }, []);
-
-    if (!ors.length) return ors;
-
-    const listOfGroups = ors.reduce(
-      (acc, o) => [
-        ...acc,
-        Object.entries(o).reduce(
-          (acc, [key, val]) => [...acc, { [key]: val }],
-          []
-        ),
-      ],
-      []
-    );
-
-    return permuteAcc(listOfGroups);
-  });
-
-  const countCards = (testType, tableau) =>
-    get(tableau).reduce(
+  countCardsByType(testTypes) {
+    const reducer = testType => this.$tableau.reduce(
       (acc, { type }) => (testType === type ? acc + 1 : acc),
       0
     );
 
-  return {
-    tableau,
-    coins: balance,
-    shields,
-    vps,
-    stone,
-    wood,
-    clay,
-    glass,
-    papyrus,
-    stock,
-    chain,
-    differentSciences,
-    name: writable(name),
-    color: colorName,
-    setMilitaryVPs: vps => militaryVPs.set(vps),
-    getEndGameVPs: () => {
-      const cardsVPs = get(vps);
-      const coinsVPs = Math.floor(get(balance) / 3);
+    if (Array.isArray(testTypes)) {
+      return testTypes.reduce(
+        (acc, type) => acc + reducer(type),
+        0
+      );
+    }
 
-      const endGameEffectsVPs = get(tableau).reduce((acc, { effects }) => {
-        const foreachEffect = effects['foreach-card'];
+    return reducer(testTypes);
+  }
 
-        if (foreachEffect?.where === 'most-of-type-city') {
-          if (foreachEffect.type === 'coins') {
-            const currentPlayerCoins = get(balance);
-            const opponentCoins = get(getOpponentPlayer().balance);
+  takeCard(card) {
+    this.tableau.update(tableau => [ card, ...tableau ]);
 
-            return (
-              acc +
-              foreachEffect.reward.vp *
-                Math.floor(
-                  Math.max(currentPlayerCoins, opponentCoins) /
-                    foreachEffect['divide-count-by']
-                )
-            );
-          }
+    const foreachEffect = card.effects['foreach-card'];
 
-          if (foreachEffect.reward.vp) {
-            const countCardsInTableau = tableau =>
-              Array.isArray(foreachEffect.type)
-                ? foreachEffect.type.reduce(
-                    (acc, type) => acc + countCards(type, tableau),
-                    0
-                  )
-                : countCards(foreachEffect.type, tableau);
+    if (foreachEffect?.where === 'your-city') {
+      const count = this.countCardsByType(foreachEffect.type);
+      const newCoins = foreachEffect.reward.coins || 0;
+      const gain = count * newCoins;
 
-            const currentPlayerCount = countCardsInTableau(tableau);
-            const opponentPlayerCount = countCardsInTableau(
-              getOpponentPlayer().tableau
-            );
-            const gain =
-              Math.max(currentPlayerCount, opponentPlayerCount) *
-              foreachEffect.reward.vp;
+      if (gain) this._coins.update(c => c + gain);
+    }
 
-            return acc + gain;
-          }
-        }
 
-        return acc;
-      }, 0);
+    if (
+      foreachEffect?.where === 'most-of-type-city' &&
+      foreachEffect?.reward?.coins
+    ) {
 
-      return cardsVPs + coinsVPs + endGameEffectsVPs;
-    },
-    takeCard: card => {
-      tableau.update(arr => [card, ...arr]);
+      const currentPlayerCount = this.countCardsByType(foreachEffect.type);
+      const opponentPlayerCount =
+        this.getOpponentPlayer().countCardsByType(foreachEffect.type);
 
-      const foreachEffect = card.effects['foreach-card'];
+      const newCoins = foreachEffect.reward.coins;
 
-      if (foreachEffect?.where === 'your-city') {
-        const count = countCards(foreachEffect.type, tableau);
-        const newCoins = foreachEffect.reward.coins || 0;
-        const gain = count * newCoins;
+      const gain =
+        Math.max(currentPlayerCount, opponentPlayerCount) * newCoins;
 
-        if (gain) coins.update(c => c + gain);
-      }
+      if (gain) this._coins.update(c => c + gain);
+    }
 
-      if (
-        foreachEffect?.where === 'most-of-type-city' &&
-        foreachEffect?.reward?.coins
-      ) {
-        const countCardsInTableau = tableau =>
-          Array.isArray(foreachEffect.type)
-            ? foreachEffect.type.reduce(
-                (acc, type) => acc + countCards(type, tableau),
-                0
+    this._store.set(this);
+  }
+
+  getEndGameVPs() {
+    const playerResources = this.$resources;
+
+    const cardsVPs = playerResources.vps;
+    const coinsVPs = Math.floor(playerResources.balance / 3);
+
+    const endGameEffectsVPs = this.$tableau.reduce((acc, { effects }) => {
+      const foreachEffect = effects['foreach-card'];
+
+      if (foreachEffect?.where === 'most-of-type-city') {
+        if (foreachEffect.type === 'coins') {
+          const currentPlayerCoins = playerResources.balance;
+          const opponentCoins = this.getOpponentPlayer().$resources.balance;
+
+          return (
+            acc +
+            foreachEffect.reward.vp *
+              Math.floor(
+                Math.max(currentPlayerCoins, opponentCoins) /
+                  foreachEffect['divide-count-by']
               )
-            : countCards(foreachEffect.type, tableau);
-
-        const currentPlayerCount = countCardsInTableau(tableau);
-        const opponentPlayerCount = countCardsInTableau(
-          getOpponentPlayer().tableau
-        );
-
-        const newCoins = foreachEffect.reward.coins;
-
-        const gain =
-          Math.max(currentPlayerCount, opponentPlayerCount) * newCoins;
-
-        if (gain) coins.update(c => c + gain);
-      }
-    },
-    takeDebit: debit => {
-      const $balance = get(balance);
-
-      if (debit <= $balance) coins.update(c => c - debit);
-      else throw new Error('Not enougth coins');
-    },
-    tradeCard: () => {
-      const tradeValue = countCards('trade', tableau);
-
-      coins.update(c => c + tradeValue + 2);
-    },
-    getCardBuyValue: ({ cost }) => {
-      if (!cost) return 0;
-
-      if (cost.chain & get(chain).includes(cost.chain)) {
-        return 0;
-      }
-
-      const $orResources = get(orResources);
-      const $stock = get(stock);
-
-      const opponent = getOpponentPlayer();
-
-      const resources = [
-        ['stone', get(stone), get(opponent.stone)],
-        ['wood', get(wood), get(opponent.wood)],
-        ['clay', get(clay), get(opponent.clay)],
-        ['glass', get(glass), get(opponent.glass)],
-        ['papyrus', get(papyrus), get(opponent.papyrus)],
-      ];
-
-      const calcCost = orGroup => {
-        let accCost = 0;
-
-        for (let [resource, $store, $opponentStore] of resources) {
-          const resourceCost =
-            (cost[resource] || 0) -
-            ($store + orGroup ? orGroup[resource] || 0 : 0);
-
-          if (resourceCost > 0) {
-            accCost += $stock.includes(resource)
-              ? resourceCost
-              : resourceCost * ($opponentStore + 2);
-          }
+          );
         }
 
-        return accCost + (cost.coins || 0);
-      };
+        if (foreachEffect.reward.vp) {
 
-      if (!$orResources.length) {
-        return calcCost();
+          const currentPlayerCount = this.countCardsByType(foreachEffect.type);
+          const opponentPlayerCount =
+            this.getOpponentPlayer().countCardsByType(foreachEffect.type)
+
+          const gain =
+            Math.max(currentPlayerCount, opponentPlayerCount) *
+            foreachEffect.reward.vp;
+
+          return acc + gain;
+        }
       }
 
-      const orCosts = $orResources.map(calcCost);
+      return acc;
+    }, 0);
 
-      return Math.min(...orCosts);
-    },
-    getCardSellValue: () => {
-      return 2 + countCards('trade', tableau);
-    },
-    isCurrentPlayer: player => {
-      return player === get(currentPlayer);
-    },
-    getOpponentPlayer,
-    getColor: () => get(colorName),
-    getBalance: () => get(balance),
-  };
+    return cardsVPs + coinsVPs + endGameEffectsVPs;
+  }
+
+  getCardBuyValue({ cost }) {
+    if (!cost) return 0;
+
+    const playerResources = this.$resources;
+    const { chains } = playerResources;
+
+    if (cost.chain & chains.includes(cost.chain)) return 0;
+
+    const { permutedOrs, stocks } = playerResources;
+
+    const opponentResources = this.getOpponentPlayer().$resources;
+
+    const resources = [
+      ['stone', playerResources.stone, opponentResources.stone],
+      ['wood', playerResources.wood, opponentResources.wood],
+      ['clay', playerResources.clay, opponentResources.clay],
+      ['glass', playerResources.glass, opponentResources.glass],
+      ['papyrus', playerResources.papyrus, opponentResources.papyrus],
+    ];
+
+    const calcCost = (orGroup = []) => {
+      let accCost = 0;
+
+      for (let [resourceName, playerResource, opponentResource] of resources) {
+        const groupCount = orGroup[resourceName] ?? 0;
+        const resourceCost =
+          (cost[resourceName] ?? 0) - (playerResource + groupCount);
+
+        if (resourceCost > 0) {
+          accCost += stocks.includes(resourceName)
+            ? resourceCost
+            : resourceCost * (opponentResource + 2);
+        }
+      }
+
+      return accCost + (cost.coins ?? 0);
+    };
+
+    if (!permutedOrs.length) {
+      return calcCost();
+    }
+
+    const orCosts = permutedOrs.map(calcCost);
+
+    return Math.min(...orCosts);
+  }
+
+  pay(coins) {
+    if (coins > this.$resources.balance) throw new Error('Not enough coins');
+
+    this._coins.update(c => c - coins);
+    this._store.set(this);
+  }
+
+  takeDebit(coins) {
+    const debit = this.$resources.balance - coins;
+
+    if (debit >= 0) this.pay(coins);
+    else this.pay(coins + debit);
+
+  }
+
+  tradeCard() {
+    this._coins.update(c => c + this.cardTradeValue);
+    this._store.set(this);
+  }
+
+  get cardTradeValue() {
+    const tradeValue = this.countCardsByType('trade');
+
+    return tradeValue + 2;
+  }
+
+  takeMilitaryVPs(vps) {
+    this._militaryVPs.set(vps);
+    this._store.set(this);
+  }
+
+  isCurrentPlayer() {
+    return this === get(currentPlayer);
+  }
+
+  subscribe(subscriber) {
+    return this._store.subscribe(subscriber)
+  }
+
+  get $name() {
+    return get(this.name);
+  }
+
+  get $color() {
+    return get(this.color);
+  }
+
+  get $tableau() {
+    return get(this.tableau);
+  }
+
+  get $resources() {
+    return get(this.resources);
+  }
+
 };

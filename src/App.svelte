@@ -4,7 +4,7 @@
   import PlayerTableau from './components/player/PlayerTableau.svelte';
   import MainTable from './components/table/MainTable.svelte';
   import EndGameTable from './components/endgame/EndGameTable.svelte';
-  import MilitaryBoard from './components/MilitaryBoard.svelte';
+  import MilitaryBoard from './components/military/MilitaryBoard.svelte';
   import Konami from './components/Konami.svelte';
 
   import {
@@ -53,7 +53,7 @@
     {#await $agePromise}
       <p>waiting cards...</p>
     {:then}
-      <section class="gametable" style="--bgcolor:{$currentPlayer.getColor()}">
+      <section class="gametable" style="--bgcolor:{$currentPlayer.$color}">
         <header class="header">
           <h1 style="margin: 0">
             {@html $hasGameEnded ? 'GAME&apos;s END' : $currentAgeName}
@@ -63,7 +63,7 @@
         </header>
         <PlayerTableau player={$playerOne} gridArea="player1" />
         <PlayerTableau player={$playerTwo} gridArea="player2" />
-        <!-- <MilitaryBoard /> -->
+        <MilitaryBoard />
         {#if $hasGameEnded}
           <EndGameTable />
         {:else}

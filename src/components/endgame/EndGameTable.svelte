@@ -6,6 +6,7 @@
     playerOne,
     playerTwo,
     scientificSupremacist,
+    militarySupremacist
   } from '../../stores';
   import PlayerTable from './PlayerTable.svelte';
 
@@ -18,17 +19,13 @@
   let playerOnePoints;
   let playerTwoPoints;
 
-  console.log('foooooo');
-
   if ($scientificSupremacist) {
     loser = $scientificSupremacist === $playerTwo ? $playerOne : $playerTwo;
-
-    console.log($scientificSupremacist, loser);
+  } if ($militarySupremacist) {
+    loser = $militarySupremacist === $playerTwo ? $playerOne : $playerTwo;
   } else {
     playerOnePoints = $playerOne.getEndGameVPs();
     playerTwoPoints = $playerTwo.getEndGameVPs();
-
-    console.log(playerOnePoints, playerTwoPoints);
 
     if (playerOnePoints === playerTwoPoints) {
       drawn = true;
@@ -57,6 +54,9 @@
   {#if $scientificSupremacist}
     <PlayerTable player={$scientificSupremacist} scientific winer />
     <PlayerTable player={loser} scientific />
+  {:else if $militarySupremacist}
+    <PlayerTable player={$militarySupremacist} military winer />
+    <PlayerTable player={loser} military />
   {:else if drawn != null}
     <PlayerTable player={winer} points={winerPoints} winer />
     <PlayerTable player={loser} points={loserPoints} />

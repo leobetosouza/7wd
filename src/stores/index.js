@@ -1,4 +1,4 @@
-import { writable, get } from 'svelte/store';
+import { writable, derived, get } from 'svelte/store';
 
 export const agePromise = writable();
 export const currentAgeName = writable('');
@@ -15,9 +15,10 @@ export const currentPlayer = (() => {
   };
 })();
 
-export const playerOne = writable({});
-export const playerTwo = writable({});
+export const playerOne = writable(writable({}));
+export const playerTwo = writable(writable({}));
 export const scientificSupremacist = writable();
+export const militarySupremacist = writable();
 
 export const hasGameEnded = writable(false);
 
@@ -61,3 +62,21 @@ export const activeCards = (() => {
 })();
 
 export const militaryLayout = writable([]);
+export const conflictPawnIndex = derived(currentPlayer, $currentPlayer => {
+    const playerShields = $currentPlayer.$resources.shields;
+    const opponentShields = $currentPlayer.getOpponentPlayer().$resources.shields;
+
+    let firstShields, lastShields;
+
+    if (get(playerOne) === $currentPlayer) {
+      firstShields = playerShields;
+      lastShields = opponentShields;
+    } else {
+      firstShields = opponentShields;
+      lastShields = playerShields;
+    }
+
+    const diff = (firstShields - lastShields) || 0;
+    return Math.max(Math.min(diff + 9, 18), 0);
+  }
+);

@@ -3,7 +3,8 @@
   export let points;
   export let winer = false;
   export let scientific = false;
-  console.log(player);
+  export let military = false;
+
   const { name, color } = player;
 </script>
 
@@ -17,6 +18,8 @@
   {/if}
   {#if scientific}
     {#if winer}Science Supremacy{:else}&mdash;{/if}
+  {:else if military}
+    {#if winer}Military Supremacy{:else}&mdash;{/if}
   {:else}
     {points} VPs
   {/if}
