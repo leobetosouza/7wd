@@ -22,7 +22,7 @@ export default class Player {
 
           acc.balance += effects.coins ?? 0;
           acc.vps += effects.vp ?? 0;
-          acc.shields += (effects.shields ? effects.shields + 9 : 0) ?? 0;
+          acc.shields += effects.shields ?? 0;
           acc.wood += effects.wood ?? 0;
           acc.stone += effects.stone ?? 0;
           acc.clay += effects.clay ?? 0;
