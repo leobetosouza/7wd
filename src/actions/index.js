@@ -10,6 +10,7 @@ import {
   getMilitaryBoardLayout,
 } from '../services/resources';
 import {
+  actionsStack,
   agePromise,
   currentAgeName,
   currentPlayer,
@@ -24,6 +25,7 @@ import {
   tableLayout,
   hasGameEnded,
   militaryLayout,
+  conflictTokens,
   conflictPawnIndex,
 } from '../stores';
 
@@ -59,14 +61,21 @@ export const createPlayers = (playerOneData, playerTwoData) => {
 
 const prepareMilitaryBoard = async () => {
   const rawLayout = await getMilitaryBoardLayout();
+  const tokens = rawLayout['conflict-tokens'];
+
+  const slots = rawLayout['slots'].map(slot => ({
+    ...slot,
+    ...(tokens[slot['conflict-token']] ?? {})
+  }));
 
   const layout = [
-    ...rawLayout.reduce((acc, o) => [{ ...o }, ...acc], []),
+    ...slots.reduce((acc, o) => [{ ...o, player: playerOne }, ...acc], []),
     { start: true },
-    ...rawLayout,
+    ...slots.map(o => ({ ...o, player: playerTwo })),
   ];
 
   militaryLayout.set(layout);
+  conflictTokens.set(tokens.map(({ debit }) => debit));
 };
 
 const prepareAge =
@@ -99,8 +108,8 @@ const prepareAge =
 
 const agesList = [
   {
-     name: '1st Age',
-     prepare: prepareAge(get1stAgeCards, get1stAgeTableLayout, true),
+    name: '1st Age',
+    prepare: prepareAge(get1stAgeCards, get1stAgeTableLayout, true),
   },
   {
     name: '2nd Age',
@@ -132,22 +141,84 @@ export const setupNextAge = async () => {
 };
 
 
-export const checkMilitarySupremacy = () => {
+const hasMilitarySupremacy = () => {
   const $conflictPawnIndex = get(conflictPawnIndex);
+  const $playerOne = get(playerOne);
+  const $playerTwo = get(playerTwo);
 
   if ($conflictPawnIndex <= 0) {
-    militarySupremacist.set(get(playerTwo));
+    militarySupremacist.set($playerTwo);
     hasGameEnded.set(true);
+    return true;
   };
 
+  if ($conflictPawnIndex >= 1 && $conflictPawnIndex <= 3) {
+    $playerOne.takeDebitToken(5);
+    $playerOne.takeMilitaryVPs(0);
+    $playerTwo.takeMilitaryVPs(10);
+    return false;
+  }
+
+  if ($conflictPawnIndex >= 4 && $conflictPawnIndex <= 6) {
+    $playerOne.takeDebitToken(3);
+    $playerOne.takeMilitaryVPs(0);
+    $playerTwo.takeMilitaryVPs(5);
+    return false;
+  }
+
+  if ($conflictPawnIndex === 7 || $conflictPawnIndex === 8) {
+    $playerOne.takeMilitaryVPs(0);
+    $playerTwo.takeMilitaryVPs(2);
+    return false;
+  }
+
+  if ($conflictPawnIndex === 9) {
+    $playerOne.takeMilitaryVPs(0);
+    $playerTwo.takeMilitaryVPs(0);
+  }
+
+  if ($conflictPawnIndex === 10 || $conflictPawnIndex === 11) {
+    $playerTwo.takeMilitaryVPs(0);
+    $playerOne.takeMilitaryVPs(2);
+    return false;
+  }
+
+  if ($conflictPawnIndex >= 12 && $conflictPawnIndex <= 14) {
+    $playerTwo.takeDebitToken(3);
+    $playerTwo.takeMilitaryVPs(0);
+    $playerOne.takeMilitaryVPs(5);
+    return false;
+  }
+
+  if ($conflictPawnIndex >= 15 && $conflictPawnIndex <= 17) {
+    $playerTwo.takeDebitToken(5);
+    $playerTwo.takeMilitaryVPs(0);
+    $playerOne.takeMilitaryVPs(10);
+    return false;
+  }
+
   if ($conflictPawnIndex >= 18) {
-    militarySupremacist.set(get(playerOne));
+    militarySupremacist.set($playerOne);
     hasGameEnded.set(true);
+    return true;
   }
 }
 
 const hasScientificSupremacy = ({ differentSciences }) =>
   get(differentSciences) === 6;
+
+const endTurn = $currentPlayer => {
+  if (hasScientificSupremacy($currentPlayer)) {
+    scientificSupremacist.set($currentPlayer);
+    hasGameEnded.set(true);
+
+    return;
+  }
+
+  if (hasMilitarySupremacy()) return;
+
+  currentPlayer.set(playerControl.getNext());
+};
 
 export const buyCard = ({ card, slot }) => {
   try {
@@ -159,12 +230,15 @@ export const buyCard = ({ card, slot }) => {
     removedCardSlots.update(arr => [slot, ...arr]);
     $currentPlayer.takeCard(card);
 
-    if (hasScientificSupremacy($currentPlayer)) {
-      scientificSupremacist.set($currentPlayer);
-      hasGameEnded.set(true);
-    } else {
-      currentPlayer.set(playerControl.getNext());
-    }
+    actionsStack.update(a => [
+      {
+        player: $currentPlayer,
+        action: { buyCard: { card, slot } }
+      },
+      ...a
+    ]);
+
+    endTurn($currentPlayer);
   } catch (e) {
     console.error(e);
   }
@@ -177,5 +251,14 @@ export const sellCard = ({ card, slot }) => {
 
   removedCardSlots.update(arr => [slot, ...arr]);
   discard.add(card);
-  currentPlayer.set(playerControl.getNext());
+
+  actionsStack.update(a => [
+    {
+      player: $currentPlayer,
+      action: { sellCard: { card, slot } }
+    },
+    ...a
+  ]);
+
+  endTurn($currentPlayer);
 };

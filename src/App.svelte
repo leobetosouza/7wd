@@ -15,7 +15,7 @@
     playerTwo,
     reserve,
     discard,
-    hasGameEnded,
+    hasGameEnded
   } from './stores';
 
   import { createPlayers, setupNextAge } from './actions';
@@ -49,7 +49,7 @@
     <button on:click|once={startGame}>Start Game</button>
   {/if}
 
-  {#if $agePromise}
+  {#if isGameStarted && $agePromise}
     {#await $agePromise}
       <p>waiting cards...</p>
     {:then}

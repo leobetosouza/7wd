@@ -252,7 +252,7 @@
            "type": "raw",
            "cost": { "coins": 2 },
            "effects": { "wood": 2 },
-           "age": 2 
+           "age": 2
         },
         {
             "name": "Templo",
@@ -273,7 +273,7 @@
            "type": "raw",
            "cost": { "coins": 2 },
            "effects": { "stone": 2 },
-           "age": 2 
+           "age": 2
         },
         {
             "name": "Área de Desfiles",
@@ -599,7 +599,7 @@
             "cost": { "wood": 3, "glass": 1, "papyrus": 1 },
             "effects": [ { "take-progress-token": 1 }, { "vp": 4 } ]
         }
-        
+
     ],
     "progress-tokens": [
         {
@@ -705,19 +705,22 @@
                 "slots": [ null, { "turned": true, "covered_by": [ [ "g", 2 ] ]  }, { "turned": true, "covered_by": [ [ "g", 2 ], [ "g", 3 ] ] }, { "turned": true, "covered_by": [ [ "g", 3 ] ] }, null, null ]
             },
             "g": {
-                "slots": [ null, null, {}, {}, null, null ] 
+                "slots": [ null, null, {}, {}, null, null ]
             }
         }
     },
-    "military-board": [
-        { "vp": 2 },
-        { "vp": 2 },
-        { "vp": 5, "debit": 3 },
-        { "vp": 5, "debit": 3 },
-        { "vp": 5, "debit": 3 },
-        { "vp": 10, "debit": 5 },
-        { "vp": 10, "debit": 5 },
-        { "vp": 10, "debit": 5 },
-        { "victory": true }
-    ]
+    "military-board": {
+      "conflict-tokens": [ { "debit": 3 }, { "debit": 5 } ],
+      "slots" :[
+          { "vp": 2 },
+          { "vp": 2 },
+          { "vp": 5, "conflict-token": 0 },
+          { "vp": 5, "conflict-token": 0 },
+          { "vp": 5, "conflict-token": 0 },
+          { "vp": 10, "conflict-token": 1 },
+          { "vp": 10, "conflict-token": 1 },
+          { "vp": 10, "conflict-token": 1 },
+          { "victory": true }
+      ]
+    }
 }

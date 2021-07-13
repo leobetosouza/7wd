@@ -3,6 +3,7 @@
   export let value;
   export let isMini = false;
   export let isCost = false;
+  export let isInset = false;
 
   const chainsTable = {
     gear: 'A',
@@ -58,6 +59,7 @@
     class="resource-number resource-{effect}"
     class:resource-cost={isCost}
     class:resource-mini={isMini}
+    class:resource-inset={isInset}
     title="{value} {effect === 'vp' ? 'victory points' : effect}">{value}</span
   >
 {/if}
@@ -66,6 +68,7 @@
     class="resource-number resource-debit"
     class:resource-cost={isCost}
     class:resource-mini={isMini}
+    class:resource-inset={isInset}
     title="Debit of -{value}">{value}</span
   >
 {/if}
@@ -277,5 +280,17 @@
   .resource-cost {
     margin-left: 0.1rem;
     transform: scale(0.8);
+  }
+
+  .resource-inset {
+    bottom: -0.2rem;
+  }
+
+  .resource-vp.resource-inset {
+    right: -0.16rem;
+  }
+
+  .resource-debit.resource-inset {
+    left: -0.15rem;
   }
 </style>

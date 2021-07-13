@@ -1,9 +1,12 @@
 import { writable, derived, get } from 'svelte/store';
 import { currentPlayer, playerOne, playerTwo } from './index';
 import { permuteAcc, listOfGroups } from '../utils';
+import { conflictTokens } from './index';
 
 export default class Player {
   tableau = writable([]);
+  debitTokens = writable([]);
+
   _coins = writable(7);
   _militaryVPs = writable(0);
   _store = writable(this);
@@ -218,7 +221,18 @@ export default class Player {
 
     if (debit >= 0) this.pay(coins);
     else this.pay(coins + debit);
+  }
 
+  takeDebitToken(value) {
+    const $conflictTokens = get(conflictTokens);
+
+    for (let debit of $conflictTokens) {
+      if (!this.$debitTokens.includes(debit)) {
+        this.debitTokens.update(arr => [...arr, debit]);
+        this.takeDebit(debit);
+      }
+      if (debit === value) break;
+    }
   }
 
   tradeCard() {
@@ -259,6 +273,10 @@ export default class Player {
 
   get $resources() {
     return get(this.resources);
+  }
+
+  get $debitTokens() {
+    return get(this.debitTokens);
   }
 
 };

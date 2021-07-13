@@ -61,8 +61,12 @@ export const activeCards = (() => {
   };
 })();
 
+export const actionsStack = writable([]);
+
 export const militaryLayout = writable([]);
-export const conflictPawnIndex = derived(currentPlayer, $currentPlayer => {
+export const conflictTokens = writable([]);
+export const conflictPawnIndex = derived(actionsStack, _ => {
+    const $currentPlayer = get(currentPlayer);
     const playerShields = $currentPlayer.$resources.shields;
     const opponentShields = $currentPlayer.getOpponentPlayer().$resources.shields;
 
