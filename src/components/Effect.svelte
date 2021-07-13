@@ -181,7 +181,7 @@
     line-height: 1.2rem;
     height: 1.2rem;
     width: 1.2rem;
-    font-size: 0.8rem;
+    font-size: 1.2rem;
     text-align: center;
     vertical-align: middle;
     border: 2px solid #000;
