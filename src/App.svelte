@@ -86,6 +86,33 @@
 </main>
 
 <style>
+  :global(:root) {
+    --raw-card-color: brown;
+    --wonder-card-color: #000;
+    --manufacture-card-color: gray;
+    --civic-card-color: blue;
+    --trade-card-color: yellow;
+    --military-card-color: crimson;
+    --science-card-color: green;
+    --guild-card-color: purple;
+
+    --age-1-color: saddlebrown;
+    --age-2-color: royalblue;
+    --age-3-color: blueviolet;
+    --age-guild-color: violet;
+
+    --vps-color: blue;
+    --coins-color: goldenrod;
+    --glass-color: dodgerblue;
+    --papyrus-color: khaki;
+    --stone-color: silver;
+    --clay-color: sandybrown;
+    --wood-color: sienna;
+    --shields-color: red;
+    --science-color: lime;
+    --stock-color: goldenrod;
+  }
+
   main {
     text-align: center;
     padding: 0;

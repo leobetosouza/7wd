@@ -155,46 +155,46 @@
   }
 
   .card-type-raw {
-    background-color: brown;
+    background-color: var(--raw-card-color);
   }
 
   .card-type-manufacture {
-    background-color: gray;
+    background-color: var(--manufacture-card-color);
   }
 
   .card-type-civic {
-    background-color: blue;
+    background-color: var(--civic-card-color);
   }
 
   .card-type-trade {
-    background-color: yellow;
+    background-color: var(--trade-card-color);
   }
 
   .card-type-military {
-    background-color: crimson;
+    background-color: var(--military-card-color);
   }
 
   .card-type-science {
-    background-color: green;
+    background-color: var(--science-card-color);
   }
 
   .card-type-guild {
-    background-color: purple;
+    background-color: var(--guild-card-color);
   }
 
   .card-age-1 {
-    background-color: saddlebrown;
+    background-color: var(--age-1-color);
   }
 
   .card-age-2 {
-    background-color: royalblue;
+    background-color: var(--age-2-color);
   }
 
   .card-age-3 {
-    background-color: blueviolet;
+    background-color: var(--age-3-color);
   }
 
   .card-age-guild {
-    background-color: violet;
+    background-color: var(--age-guild-color);
   }
 </style>

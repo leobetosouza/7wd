@@ -158,7 +158,7 @@
   }
   .resource-stock::before {
     content: '1';
-    background: goldenrod;
+    background: var(--stock-color);
     color: #000;
 
     position: absolute;
@@ -177,7 +177,7 @@
   }
 
   .resource-science {
-    background: lime;
+    background: var(--science-color);
     line-height: 1.2rem;
     height: 1.2rem;
     width: 1.2rem;
@@ -189,43 +189,43 @@
   }
 
   .resource-vp {
-    background: blue;
+    background: var(--vps-color);
     color: #fff;
   }
 
   .resource-coins {
-    background: goldenrod;
+    background: var(--coins-color);
     color: #000;
   }
 
   .resource-debit {
-    background: goldenrod;
+    background: var(--coins-color);
     border-color: #f00;
     color: #000;
   }
 
   .resource-glass {
-    background: dodgerblue;
+    background: var(--glass-color);
   }
 
   .resource-papyrus {
-    background: khaki;
+    background: var(--papyrus-color);
   }
 
   .resource-stone {
-    background: silver;
+    background: var(--stone-color);
   }
 
   .resource-clay {
-    background: sandybrown;
+    background: var(--clay-color);
   }
 
   .resource-wood {
-    background: sienna;
+    background: var(--wood-color);
   }
 
   .resource-shields {
-    background: red;
+    background: var(--shields-color);
   }
 
   .card-mini {
@@ -250,31 +250,31 @@
   }
 
   .card-mini-raw {
-    background-color: brown;
+    background-color: var(--raw-card-color);
   }
 
   .card-mini-wonder {
-    background-color: #000;
+    background-color: var(--wonder-card-color);
   }
 
   .card-mini-manufacture {
-    background-color: gray;
+    background-color: var(--manufacture-card-color);
   }
 
   .card-mini-civic {
-    background-color: blue;
+    background-color: var(--civic-card-color);
   }
 
   .card-mini-trade {
-    background-color: yellow;
+    background-color: var(--trade-card-color);
   }
 
   .card-mini-military {
-    background-color: crimson;
+    background-color: var(--military-card-color);
   }
 
   .card-mini-science {
-    background-color: green;
+    background-color: var(--science-card-color);
   }
 
   .resource-cost {
