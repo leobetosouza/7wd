@@ -21,7 +21,7 @@ export default class Player {
     [this.tableau, this._coins, this._militaryVPs],
     ([$tableau, $coins, $militaryVPs]) => {
       const resources = $tableau.reduce(
-        (acc, { effects }) => {
+        (acc, { effects, type }) => {
           const { chain, science, stock, or } = effects;
 
           acc.balance += effects.coins ?? 0;
@@ -42,12 +42,18 @@ export default class Player {
             else acc.stocks.push(stock);
           }
 
+          acc.cards[type] += 1;
+
           return acc;
         },
         {
           balance: $coins, vps: $militaryVPs, shields: 0,
           wood: 0, stone: 0, clay: 0, glass: 0, papyrus: 0,
-          sciences: [], ors: [], chains: [], stocks: []
+          sciences: [], ors: [], chains: [], stocks: [],
+          cards: {
+            raw: 0, manufacture: 0, civic: 0,
+            trade: 0, military: 0, science: 0, guild: 0
+          }
         }
       );
 
@@ -70,19 +76,15 @@ export default class Player {
   };
 
   countCardsByType(testTypes) {
-    const reducer = testType => this.$tableau.reduce(
-      (acc, { type }) => (testType === type ? acc + 1 : acc),
-      0
-    );
 
     if (Array.isArray(testTypes)) {
       return testTypes.reduce(
-        (acc, type) => acc + reducer(type),
+        (acc, type) => acc + this.$resources.cards[type],
         0
       );
     }
 
-    return reducer(testTypes);
+    return this.$resources.cards[testTypes];
   }
 
   takeCard(card) {
@@ -97,7 +99,6 @@ export default class Player {
 
       if (gain) this._coins.update(c => c + gain);
     }
-
 
     if (
       foreachEffect?.where === 'most-of-type-city' &&
@@ -242,7 +243,7 @@ export default class Player {
   }
 
   get cardTradeValue() {
-    const tradeValue = this.countCardsByType('trade');
+    const tradeValue = this.$resources.cards['trade'];
 
     return tradeValue + 2;
   }
