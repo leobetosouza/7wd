@@ -11,9 +11,10 @@ export default class Player {
   _militaryVPs = writable(0);
   _store = writable(this);
 
-  constructor ({ name, color }) {
+  constructor ({ name, color, idx }) {
     this.color = writable(color);
     this.name = writable(name);
+    this.idx = idx;
   }
 
   resources = derived(

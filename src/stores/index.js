@@ -2,6 +2,7 @@ import { writable, derived, get } from 'svelte/store';
 
 export const agePromise = writable();
 export const currentAgeName = writable('');
+export const isAgeInitSetupInProgress = writable(false);
 
 export const currentPlayer = (() => {
   const player = writable({});
@@ -65,10 +66,11 @@ export const actionsStack = writable([]);
 
 export const militaryLayout = writable([]);
 export const conflictTokens = writable([]);
+
 export const conflictPawnIndex = derived(actionsStack, _ => {
     const $currentPlayer = get(currentPlayer);
-    const playerShields = $currentPlayer.$resources.shields;
-    const opponentShields = $currentPlayer.getOpponentPlayer().$resources.shields;
+    const playerShields = $currentPlayer?.$resources?.shields ?? 0;
+    const opponentShields = $currentPlayer?.getOpponentPlayer?.()?.$resources?.shields ?? 0;
 
     let firstShields, lastShields;
 

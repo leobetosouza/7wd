@@ -6,6 +6,7 @@
   import EndGameTable from './components/endgame/EndGameTable.svelte';
   import MilitaryBoard from './components/military/MilitaryBoard.svelte';
   import Konami from './components/Konami.svelte';
+  import ChooseFirstPlayer from './components/ChooseFirstPlayer.svelte';
 
   import {
     currentPlayer,
@@ -15,7 +16,8 @@
     playerTwo,
     reserve,
     discard,
-    hasGameEnded
+    hasGameEnded,
+    isAgeInitSetupInProgress
   } from './stores';
 
   import { createPlayers, setupNextAge } from './actions';
@@ -45,6 +47,10 @@
 </script>
 
 <main>
+  {#if $isAgeInitSetupInProgress}
+    <ChooseFirstPlayer />
+  {/if}
+
   {#if !isGameStarted}
     <button on:click|once={startGame}>Start Game</button>
   {/if}
@@ -53,7 +59,10 @@
     {#await $agePromise}
       <p>waiting cards...</p>
     {:then}
-      <section class="gametable" style="--bgcolor:{$currentPlayer.$color}">
+      <section class="gametable"
+        style="--bgcolor:{$currentPlayer.$color}"
+        class:gametable-neutral={$isAgeInitSetupInProgress}
+      >
         <header class="header">
           <h1 style="margin: 0">
             {@html $hasGameEnded ? 'GAME&apos;s END' : $currentAgeName}
@@ -103,18 +112,15 @@
     height: 100%;
   }
 
+  .gametable-neutral {
+    background-color: gray;
+  }
+
   .header {
     grid-area: header;
     background: #fff;
     text-align: center;
     padding: 8px 0;
-  }
-
-  .footer {
-    grid-area: footer;
-    background: #000;
-    color: #fff;
-    text-align: center;
   }
 
   @media (min-width: 640px) {

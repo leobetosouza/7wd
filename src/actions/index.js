@@ -1,5 +1,7 @@
 import { get } from 'svelte/store';
 
+import { delay } from '../utils';
+
 import {
   get1stAgeCards,
   get2ndAgeCards,
@@ -9,6 +11,7 @@ import {
   get3rdAgeTableLayout,
   getMilitaryBoardLayout,
 } from '../services/resources';
+
 import {
   actionsStack,
   agePromise,
@@ -27,6 +30,7 @@ import {
   militaryLayout,
   conflictTokens,
   conflictPawnIndex,
+  isAgeInitSetupInProgress,
 } from '../stores';
 
 import Player from '../stores/player';
@@ -46,13 +50,16 @@ const createPlayerControl = (...players) => {
   return {
     getCurrent: () => players[n],
     getNext: () => players[idx.next().value],
-    setNext: x => (n = !(x - 1) ? 1 : 0),
+    setNext: x => {
+      n = x; // !(x - 1) ? 1 : 0;
+      return players[n];
+    },
   };
 };
 
 export const createPlayers = (playerOneData, playerTwoData) => {
-  playerOne.set(new Player(playerOneData));
-  playerTwo.set(new Player(playerTwoData));
+  playerOne.set(new Player({ ...playerOneData, idx: 0 }));
+  playerTwo.set(new Player({ ...playerTwoData, idx: 1 }));
 
   playerControl = createPlayerControl(playerOne, playerTwo);
 
@@ -78,6 +85,11 @@ const prepareMilitaryBoard = async () => {
   conflictTokens.set(tokens.map(({ debit }) => debit));
 };
 
+export const chooseFirstPlayer = player =>
+  currentPlayer.set(playerControl.setNext(player.idx));
+
+const ageInitSetup = () => isAgeInitSetupInProgress.set(true);
+
 const prepareAge =
   (getAgeCards, getTableLayout, is1stAge = false) =>
   async () => {
@@ -86,8 +98,6 @@ const prepareAge =
     if (is1stAge) {
       const militaryBoardPromise = prepareMilitaryBoard();
       promises.push(militaryBoardPromise);
-    } else {
-      // hasGameEnded.set(true);
     }
 
     const cardsPromise = getAgeCards().then(res => {
@@ -104,6 +114,11 @@ const prepareAge =
     promises.push(tableLayoutPromise);
 
     agePromise.set(Promise.all(promises));
+
+    await get(agePromise);
+
+    return !is1stAge;
+
   };
 
 const agesList = [
@@ -130,16 +145,18 @@ export const setupNextAge = async () => {
   const age = ages.next();
 
   if (!age.done) {
-    age.value.prepare();
-
-    await get(agePromise);
-
+    const hasAgeInitSetup = await age.value.prepare();
     currentAgeName.set(age.value.name);
+
+    if (hasAgeInitSetup) {
+      ageInitSetup();
+    }
   } else {
     hasGameEnded.set(true);
   }
-};
 
+  return;
+};
 
 const hasMilitarySupremacy = () => {
   const $conflictPawnIndex = get(conflictPawnIndex);
