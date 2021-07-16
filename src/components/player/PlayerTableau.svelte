@@ -1,8 +1,6 @@
 <script>
   import Effect from '../Effect.svelte';
 
-  import { currentPlayer } from '../../stores';
-
   export let player;
   export let gridArea;
 
@@ -21,8 +19,8 @@
     --area: {gridArea};
     --player-color: {$color};
   "
-  class:player-tableau-active={$currentPlayer === player}
-  class:orientation-left={player.idx === 1}
+  class:player-tableau-active={$player.isCurrentPlayer()}
+  class:orientation-left={$player.idx === 1}
 >
   <div class="player-resources">
     <h1 class="player-name">{$name}</h1>
@@ -122,14 +120,14 @@
 
   .player-resources {
     opacity: .8;
-    background: rgba(252, 242, 242, .5);
-    border: .5rem solid rgba(252, 242, 242, .5);
+    background: #fff;
+    border: .5rem solid #fff;
     padding: 1px .5rem .5rem;
   }
   .player-tableau-active .player-resources {
     opacity: 1;
-    background: rgba(252, 242, 242, .8);
-    border-color: white;
+    background: #fffe;
+    border-color: #fff;
   }
 
   .resource-line-counters {
@@ -196,6 +194,7 @@
 
   .guild-wrapper {
     background: var(--guild-card-color);
+    padding: .2rem .6rem;
   }
 
   /* .card-stack {
