@@ -1,5 +1,4 @@
 <script>
-  import CardPresenter from '../card/CardPresenter.svelte';
   import Effect from '../Effect.svelte';
 
   import { currentPlayer } from '../../stores';
@@ -10,45 +9,48 @@
   const {
     name,
     color,
-    tableau,
     resources
   } = player;
 
+  $: res = $resources;
+
 </script>
 
-<section
-  style="--area: {gridArea}"
-  class="player-tableau player-color-{$color}"
+<section  class="player-tableau"
+  style="
+    --area: {gridArea};
+    --player-color: {$color};
+  "
   class:player-tableau-active={$currentPlayer === player}
   class:orientation-left={player.idx === 1}
 >
   <div class="player-resources">
     <h1 class="player-name">{$name}</h1>
     <p class="resource-line-counters">
-      <Effect isBig effect="coins" value="{$resources.balance}" />
-      <Effect isBig effect="vp" value="{$resources.vps}" />
+      <Effect isBig effect="coins" value="{res.balance}" />
+      <Effect isBig effect="vp" value="{res.vps}" />
     </p>
     <p class="mini-cards-line">
-      <span class="mini-card raw-card" title="{$resources.cards.raw} Raw Material Cards">{$resources.cards.raw}</span>
-      <span class="mini-card manufacture-card" title="{$resources.cards.manufacture} Manufacture Cards">{$resources.cards.manufacture}</span>
-      <span class="mini-card civic-card" title="{$resources.cards.civic} Civic Cards">{$resources.cards.civic}</span>
-      <span class="mini-card military-card" title="{$resources.cards.military} Military Cards">{$resources.cards.military}</span>
-      <span class="mini-card trade-card" title="{$resources.cards.trade} Trade Cards">{$resources.cards.trade}</span>
-      <span class="mini-card science-card" title="{$resources.cards.science} Science Cards">{$resources.cards.science}</span>
-      <span class="mini-card guild-card" title="{$resources.cards.guild} Guild Cards">{$resources.cards.guild}</span>
+      <span class="mini-card raw-card" title="{res.cards.raw} Raw Material Cards">{res.cards.raw}</span>
+      <span class="mini-card manufacture-card" title="{res.cards.manufacture} Manufacture Cards">{res.cards.manufacture}</span>
+      <span class="mini-card civic-card" title="{res.cards.civic} Civic Cards">{res.cards.civic}</span>
+      <span class="mini-card military-card" title="{res.cards.military} Military Cards">{res.cards.military}</span>
+      <span class="mini-card trade-card" title="{res.cards.trade} Trade Cards">{res.cards.trade}</span>
+      <span class="mini-card science-card" title="{res.cards.science} Science Cards">{res.cards.science}</span>
+      <span class="mini-card guild-card" title="{res.cards.guild} Guild Cards">{res.cards.guild}</span>
     </p>
-    {#if $resources['foreach-card'].length}
+    {#if res['foreach-card'].length}
       <p class="resource-line">
-        {#each $resources['foreach-card'] as forCard }
+        {#each res['foreach-card'] as forCard }
           <span class="guild-wrapper">
             <Effect effect="foreach-card" value={forCard} foreachNoCoins />
           </span>
         {/each}
       </p>
     {/if}
-    {#if $resources.sciences.length}
+    {#if res.sciences.length}
       <p class="science-line">
-        {#each $resources.sciences as science}
+        {#each res.sciences as science}
           {#if Array.isArray(science)}
             <span class="science-wrapper">
               <Effect effect="science" value={science[0]} />
@@ -62,9 +64,9 @@
         {/each}
       </p>
     {/if}
-    {#if $resources.ors.length}
+    {#if res.ors.length}
       <p class="resource-line">
-        {#each $resources.ors as or}
+        {#each res.ors as or}
           <span class="or-wrapper">
             <Effect effect="or" value={or} />
           </span>
@@ -72,17 +74,17 @@
       </p>
     {/if}
     {#each ['wood', 'stone', 'clay', 'glass', 'papyrus'] as resource}
-      {#if $resources[resource] || $resources.stocks.includes(resource)}
+      {#if res[resource] || res.stocks.includes(resource)}
         <p class="resource-line">
-          {#if $resources[resource]}
+          {#if res[resource]}
             <span
               class:raw-wrapper={['wood', 'stone', 'clay'].includes(resource)}
               class:manufacture-wrapper={['glass', 'papyrus'].includes(resource)}
             >
-              <Effect effect={resource} value={$resources[resource]} />
+              <Effect effect={resource} value={res[resource]} />
             </span>
           {/if}
-          {#if $resources.stocks.includes(resource)}
+          {#if res.stocks.includes(resource)}
             <span class="stock-wrapper">
               <Effect effect="stock" value={resource} />
             </span>
@@ -90,9 +92,9 @@
         </p>
       {/if}
     {/each}
-    {#if $resources.chains.length}
+    {#if res.chains.length}
       <p class="resource-line">
-        {#each $resources.chains as chain}
+        {#each res.chains as chain}
           <Effect effect="chain" isCost value={chain} />
         {/each}
       </p>
@@ -110,15 +112,8 @@
 <style>
   .player-tableau {
     grid-area: var(--area);
-    overflow: hidden;
-  }
-  .player-color-red {
-    background: red;
-    border: 5px solid red;
-  }
-  .player-color-blue {
-    background: blue;
-    border: 5px solid blue;
+    background: var(--player-color);
+    border: 5px solid var(--player-color);
   }
 
   .player-name {
@@ -203,7 +198,7 @@
     background: var(--guild-card-color);
   }
 
-  .card-stack {
+  /* .card-stack {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -213,7 +208,7 @@
     position: relative;
     top: var(--top);
     z-index: 1;
-  }
+  } */
 
   .mini-card {
     display: inline-block;

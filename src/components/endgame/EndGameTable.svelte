@@ -56,10 +56,10 @@
   {:else if $militarySupremacist}
     <PlayerTable player={$militarySupremacist} military winer />
     <PlayerTable player={loser} military />
-  {:else if drawn != null}
+  {:else if !drawn}
     <PlayerTable player={winer} points={winerPoints} winer />
     <PlayerTable player={loser} points={loserPoints} />
-  {:else if drawn}
+  {:else}
     <PlayerTable player={$playerOne} points={playerOnePoints} />
     <PlayerTable player={$playerTwo} points={playerTwoPoints} />
   {/if}
