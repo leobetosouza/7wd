@@ -1,8 +1,7 @@
 <script>
-  import { get } from 'svelte/store';
   import Effect from '../Effect.svelte';
 
-  import { conflictPawnIndex, currentPlayer } from '../../stores';
+  import { conflictPawnIndex } from '../../stores';
 
   export let slot;
   export let idx;
@@ -21,6 +20,8 @@
   class:military-slot-active={pawn}
   class:military-slot-start={slot.start}
   class:military-slot-victory={slot.victory}
+  class:pawn-player-one={pawn && idx > 9}
+  class:pawn-player-two={pawn && idx < 9}
 >
   {#if pawn}
     <span class="conflict-pawn">战</span>
@@ -38,7 +39,7 @@
 
 <style>
   .military-slot {
-    background: lightcoral;
+    background: rgba(255, 255, 255, .5);
     width: 3rem;
     height: 100%;
     position: relative;
@@ -60,6 +61,14 @@
 
   .conflict-pawn{
     font-weight: bold;
+  }
+
+  .pawn-player-one {
+    background-color: var(--player-one-color);
+  }
+
+  .pawn-player-two {
+    background-color: var(--player-two-color);
   }
 
   .military-slot-active {

@@ -15,7 +15,8 @@
   {#each Object.entries($tableLayout) as [name, row], i}
     <div
       style="--row-top-correction: {-7 * i}rem"
-      class="table-row {row.shifted ? 'table-row-shifted' : ''}"
+      class="table-row"
+      class:table-row-shifted={row.shifted}
     >
       {#each row.slots as slot, j}
         <Card {slot} rowName={name} slotIndex={j} templateLine={i} />

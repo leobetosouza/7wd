@@ -46,7 +46,13 @@
   });
 </script>
 
-<main>
+<main
+  style="
+    --player-one-color: {$playerOne.$color};
+    --player-two-color: {$playerTwo.$color};
+    --current-player-color: {$currentPlayer.$color};
+  "
+>
   {#if $isAgeInitSetupInProgress}
     <ChooseFirstPlayer />
   {/if}
@@ -60,7 +66,6 @@
       <p>waiting cards...</p>
     {:then}
       <section class="gametable"
-        style="--bgcolor:{$currentPlayer.$color}"
         class:gametable-neutral={$isAgeInitSetupInProgress}
       >
         <header class="header">
@@ -122,11 +127,13 @@
   }
 
   .gametable {
-    background: var(--bgcolor);
+    background: var(--current-player-color);
     display: grid;
     overflow: hidden;
 
-    grid-template-areas: 'header header header' 'player1 military player2' 'player1 maintable player2';
+    grid-template-areas: 'header  header    header'
+                         'player1 military  player2'
+                         'player1 maintable player2';
     grid-template-columns: 15% auto 15%;
     grid-template-rows: 5rem 2.8rem auto;
 

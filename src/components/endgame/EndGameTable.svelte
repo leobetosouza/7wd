@@ -1,6 +1,4 @@
 <script>
-  import { onMount } from 'svelte';
-
   import {
     currentPlayer,
     playerOne,
@@ -8,6 +6,7 @@
     scientificSupremacist,
     militarySupremacist
   } from '../../stores';
+
   import PlayerTable from './PlayerTable.svelte';
 
   let drawn;

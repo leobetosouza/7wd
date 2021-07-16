@@ -1,6 +1,4 @@
 <script>
-  import { beforeUpdate } from 'svelte';
-
   import {
     isAgeInitSetupInProgress,
     currentPlayer,
@@ -26,16 +24,9 @@
   } else if ($conflictPawnIndex < 9) {
     selector = $playerOne;
   }
-  console.log($conflictPawnIndex, selector);
 </script>
 
-<div class="overlay"
-  style="
-    --current-player-color: {selector.$color};
-    --player-one-color: {$playerOne.$color};
-    --player-two-color: {$playerTwo.$color};
-  "
->
+<div class="overlay">
   <div class="choose-player">
     <h1><i class="player-name">{selector.$name}</i> choose the first player of <i>{$currentAgeName}</i>:</h1>
     <footer class="choose-buttons">
