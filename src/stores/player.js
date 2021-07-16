@@ -20,7 +20,7 @@ export default class Player {
   resources = derived(
     [this.tableau, this._coins, this._militaryVPs],
     ([$tableau, $coins, $militaryVPs]) => {
-      const resources = $tableau.reduce(
+      const resources = $tableau.reduceRight(
         (acc, { effects, type }) => {
           const { chain, science, stock, or } = effects;
 
@@ -34,8 +34,18 @@ export default class Player {
           acc.papyrus += effects.papyrus ?? 0;
 
           if (chain) acc.chains.push(chain);
-          if (science) acc.sciences.push(science);
           if (or) acc.ors.push(or);
+
+          if (science) {
+            const i = acc.sciences.indexOf(science);
+
+            if (i === -1) {
+              acc.sciences.push(science);
+            } else {
+              const pair = [ science, science ];
+              acc.sciences.splice(i, 1, pair);
+            }
+          }
 
           if (stock) {
             if (Array.isArray(stock)) acc.stocks = [...acc.stocks, ...stock]
@@ -43,6 +53,12 @@ export default class Player {
           }
 
           acc.cards[type] += 1;
+
+          if (effects['foreach-card']?.where === 'most-of-type-city') {
+            acc['foreach-card'].push(effects['foreach-card']);
+          }
+
+          acc.chains.sort();
 
           return acc;
         },
@@ -53,7 +69,8 @@ export default class Player {
           cards: {
             raw: 0, manufacture: 0, civic: 0,
             trade: 0, military: 0, science: 0, guild: 0
-          }
+          },
+          'foreach-card': [],
         }
       );
 
@@ -62,8 +79,6 @@ export default class Player {
       resources.permutedOrs = resources.ors.length
         ? permuteAcc(listOfGroups(resources.ors))
         : [];
-
-      delete resources.ors;
 
       return resources;
     }

@@ -2,8 +2,11 @@
   export let effect;
   export let value;
   export let isMini = false;
+  export let isBig = false;
   export let isCost = false;
   export let isInset = false;
+  export let isColumn = false;
+  export let foreachNoCoins = false;
 
   const chainsTable = {
     gear: 'A',
@@ -50,6 +53,7 @@
     <span
       class="resource resource-{effect}"
       class:resource-cost={isCost}
+      class:resource-big={isBig}
       title={effect}>{resourcesTable[effect]}</span
     >
   {/each}
@@ -60,6 +64,7 @@
     class:resource-cost={isCost}
     class:resource-mini={isMini}
     class:resource-inset={isInset}
+    class:resource-big={isBig}
     title="{value} {effect === 'vp' ? 'victory points' : effect}">{value}</span
   >
 {/if}
@@ -75,6 +80,7 @@
 {#if effect === 'science'}
   <span
     class="resource-science resource-science-{value}"
+    class:resource-column={isColumn}
     title="science symbol {value}">{@html sciencesTable[value]}</span
   >
 {/if}
@@ -105,9 +111,15 @@
 {/if}
 {#if effect === 'foreach-card'}
   <span class="card-mini card-mini-{value.type}">
-    {#each Object.entries(value.reward) as [e, v]}
-      <svelte:self effect={e} value={v} isMini={true} />
-    {/each}
+    {#if foreachNoCoins}
+      {#each Object.entries(value.reward).filter(([key]) => key !== "coins") as [e, v]}
+        <svelte:self effect={e} value={v} isMini={true} />
+      {/each}
+    {:else}
+      {#each Object.entries(value.reward) as [e, v]}
+        <svelte:self effect={e} value={v} isMini={true} />
+      {/each}
+    {/if}
   </span>
 {/if}
 
@@ -132,6 +144,7 @@
   }
 
   .resource {
+    margin: 0 .1rem;
     width: 1.1rem;
     height: 1.1rem;
     line-height: 1.1rem;
@@ -186,6 +199,10 @@
     vertical-align: middle;
     border: 2px solid #000;
     font-weight: bold;
+  }
+
+  .resource-science.resource-column {
+    margin: .1rem 0;
   }
 
   .resource-vp {
@@ -249,6 +266,10 @@
     right: -1rem;
   }
 
+  .resource-big {
+    transform: scale(1.6);
+  }
+
   .card-mini-raw {
     background-color: var(--raw-card-color);
   }
@@ -278,7 +299,6 @@
   }
 
   .resource-cost {
-    margin-left: 0.1rem;
     transform: scale(0.8);
   }
 
