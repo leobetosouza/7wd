@@ -110,7 +110,10 @@
   >
 {/if}
 {#if effect === 'foreach-card'}
-  <span class="card-mini card-mini-{value.type}">
+  <span class="card-mini card-mini-{value.type}"
+      class:card-mini-two-cities={value.where === 'most-of-type-city'}
+  >
+    {#if value.where === 'most-of-type-city'}+{/if}
     {#if foreachNoCoins}
       {#each Object.entries(value.reward).filter(([key]) => key !== "coins") as [e, v]}
         <svelte:self effect={e} value={v} isMini={true} />
@@ -251,6 +254,28 @@
     border: 1px solid #666;
     border-radius: 3px;
     position: relative;
+    line-height: 1;
+    color: white;
+  }
+
+  .card-mini-two-cities:before {
+    content: '‹';
+    position: absolute;
+    font-weight: bold;
+    top: 50%;
+    left: -.5rem;
+    margin-top: -.7rem;
+    color: white;
+  }
+
+  .card-mini-two-cities:after {
+    content: '›';
+    position: absolute;
+    font-weight: bold;
+    top: 50%;
+    right: -.5rem;
+    margin-top: -.7rem;
+    color: white;
   }
 
   .resource-mini {
