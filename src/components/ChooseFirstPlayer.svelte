@@ -26,7 +26,11 @@
   }
 </script>
 
-<div class="overlay">
+<div class="overlay"
+  style="
+    --selector-color: {selector.$color};
+  "
+>
   <div class="choose-player">
     <h1><i class="player-name">{selector.$name}</i> choose the first player of <i>{$currentAgeName}</i>:</h1>
     <footer class="choose-buttons">
@@ -60,14 +64,14 @@
   .choose-player {
     box-sizing: border-box;
     background: white;
-    border: 1rem solid var(--current-player-color);
+    border: 1rem solid var(--selector-color);
     width: 50%;
     padding: 2rem 5rem;
     margin-top: -15rem;
   }
 
   .player-name {
-    color: var(--current-player-color);
+    color: var(--selector-color);
   }
 
   .choose-buttons {
