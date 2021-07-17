@@ -10,6 +10,8 @@
 
   import { chooseFirstPlayer } from '../actions';
 
+  import Modal from './Modal.svelte';
+
   const choose = (player) => {
     chooseFirstPlayer(player);
     isAgeInitSetupInProgress.set(false);
@@ -26,50 +28,25 @@
   }
 </script>
 
-<div class="overlay"
-  style="
+<Modal color={selector.$color}>
+  <h1 style="
     --selector-color: {selector.$color};
-  "
->
-  <div class="choose-player">
-    <h1><i class="player-name">{selector.$name}</i> choose the first player of <i>{$currentAgeName}</i>:</h1>
-    <footer class="choose-buttons">
-      <button class="player-one-button"
-        on:click|once|stopPropagation={() => choose($playerOne)}
-      >{$playerOne.$name}</button>
-      <button class="player-two-button"
-        on:click|once|stopPropagation={() => choose($playerTwo)}
-      >{$playerTwo.$name}</button>
-    </footer>
-  </div>
-</div>
+  ">
+    <i class="player-name">{selector.$name}</i>
+    choose the first player of
+    <i>{$currentAgeName}</i>:
+  </h1>
+  <footer class="choose-buttons">
+    <button class="player-one-button"
+      on:click|once|stopPropagation={() => choose($playerOne)}
+    >{$playerOne.$name}</button>
+    <button class="player-two-button"
+      on:click|once|stopPropagation={() => choose($playerTwo)}
+    >{$playerTwo.$name}</button>
+  </footer>
+</Modal>
 
 <style>
-  .overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 100;
-
-    background: rgba(0, 0, 0, .5);
-
-    display: flex;
-    align-content: center;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .choose-player {
-    box-sizing: border-box;
-    background: white;
-    border: 1rem solid var(--selector-color);
-    width: 50%;
-    padding: 2rem 5rem;
-    margin-top: -15rem;
-  }
-
   .player-name {
     color: var(--selector-color);
   }
