@@ -34,8 +34,8 @@
 
 <style>
   .progress-token {
-    border: .3rem solid darkgreen;
-    background-color: palegreen;
+    border: .3rem solid var(--progress-token-border-color);
+    background-color: var(--progress-token-color);
     font-size: 0.8rem;
     line-height: 3.2rem;
     width: 3.2rem;

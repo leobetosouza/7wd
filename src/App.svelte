@@ -118,6 +118,9 @@
     --shields-color: red;
     --science-color: lime;
     --stock-color: goldenrod;
+
+    --progress-token-color: palegreen;
+    --progress-token-border-color: darkgreen;
   }
 
   main {

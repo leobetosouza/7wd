@@ -36,6 +36,7 @@
       <span class="mini-card trade-card" title="{res.cards.trade} Trade Cards">{res.cards.trade}</span>
       <span class="mini-card science-card" title="{res.cards.science} Science Cards">{res.cards.science}</span>
       <span class="mini-card guild-card" title="{res.cards.guild} Guild Cards">{res.cards.guild}</span>
+      <span class="mini-progress-token" title="{res.cards['progress-token']} Progress Tokens">{res.cards['progress-token']}</span>
     </p>
     {#if res['foreach-card'].length}
       <p class="resource-line">
@@ -208,6 +209,17 @@
     top: var(--top);
     z-index: 1;
   } */
+
+  .mini-progress-token {
+    display: inline-block;
+    padding: 0 .4rem;
+    border: .2rem solid var(--progress-token-border-color);
+    background: var(--progress-token-color);
+    border-radius: 50%;
+    box-sizing: border-box;
+    text-shadow: 1px 1px 0 #fff;
+    box-shadow: 1px 1px 0 rgba(0, 0, 0, .3)
+  }
 
   .mini-card {
     display: inline-block;

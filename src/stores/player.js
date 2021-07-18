@@ -69,8 +69,8 @@ export default class Player {
           wood: 0, stone: 0, clay: 0, glass: 0, papyrus: 0,
           sciences: [], ors: [], chains: [], stocks: [],
           cards: {
-            raw: 0, manufacture: 0, civic: 0,
-            trade: 0, military: 0, science: 0, guild: 0
+            raw: 0, manufacture: 0, civic: 0, trade: 0, military: 0,
+            science: 0, guild: 0, 'progress-token': 0, wonder: 0
           },
           'foreach-card': [],
         }
