@@ -56,7 +56,7 @@ export default class Player {
 
           acc.cards[type] += 1;
 
-          if (effects['foreach-card']?.where === 'most-of-type-city') {
+          if (effects['foreach-card']?.reward?.vp) {
             acc['foreach-card'].push(effects['foreach-card']);
           }
 
