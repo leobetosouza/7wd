@@ -94,8 +94,8 @@
 
 <style>
   :global(:root) {
-    --raw-card-color: brown;
-    --wonder-card-color: #000;
+    --raw-card-color: orangered;
+    --wonder-card-color: deeppink;
     --manufacture-card-color: gray;
     --civic-card-color: blue;
     --trade-card-color: yellow;
