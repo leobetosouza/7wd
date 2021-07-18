@@ -103,14 +103,14 @@
 {/if}
 {#if effect === 'chain'}
   <span
-    class="resource-chain resource-chain-{value} {isCost
-      ? 'resource-cost'
-      : 'resource-chain-top'}"
-    title="chain symbol {value}">{chainsTable[value]}</span
-  >
+    class="resource-chain resource-chain-{value}"
+    class:resource-cost={isCost}
+    class:resource-chain-top={!isCost}
+    title="Chain symbol {value}"
+  >{chainsTable[value]}</span>
 {/if}
 {#if effect === 'foreach-card'}
-  <span class="card-mini card-mini-{value.type}"
+  <span class="card-mini card-mini-{Array.isArray(value.type) ? value.type.join('_') : value.type}"
       class:card-mini-two-cities={value.where === 'most-of-type-city'}
   >
     {#if value.where === 'most-of-type-city'}+{/if}
@@ -305,6 +305,10 @@
 
   .card-mini-manufacture {
     background-color: var(--manufacture-card-color);
+  }
+
+  .card-mini-raw_manufacture {
+    background: linear-gradient(127deg, var(--raw-card-color) 50%, var(--manufacture-card-color) 51%);
   }
 
   .card-mini-civic {
