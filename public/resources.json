@@ -521,81 +521,97 @@
     "wonders": [
         {
             "name": "A Esfinge",
+            "type": "wonder",
             "cost": { "stone": 1, "clay": 1, "glass": 2  },
             "effects": [ { "replay": 1 }, { "vp": 6 } ]
         },
         {
             "name": "O Templo de Ártemis",
+            "type": "wonder",
             "cost": { "wood": 1, "stone": 1, "glass": 1, "papyrus": 1 },
             "effects": [ { "coins": 12 },  { "replay": 1 } ]
         },
         {
             "name": "Stonehenge",
+            "type": "wonder",
             "cost": { "stone": 3, "papyrus": 1 },
             "effects": { "vp": 9 }
         },
         {
             "name": "Os Jardins Suspensos",
+            "type": "wonder",
             "cost": { "wood": 2, "glass": 1, "papyrus": 1 },
             "effects": [ { "coins": 6 }, { "replay": 1 },  { "vp": 3 } ]
         },
         {
             "name": "A Via Ápia",
+            "type": "wonder",
             "cost": { "wood": 2, "glass": 1, "papyrus": 1 },
             "effects": [ { "coins": 3 }, { "debit": 3 }, { "replay": 1 },  { "vp": 3 } ]
         },
         {
             "name": "As Pirâmides",
+            "type": "wonder",
             "cost": { "stone": 3, "papyrus": 1 },
             "effects": { "vp": 9 }
         },
         {
             "name": "Pireu",
+            "type": "wonder",
             "cost": { "wood": 1, "stone": 1, "clay": 1 },
             "effects": [ { "or": { "glass": 1, "papyrus": 1 } }, { "replay": 1 }, { "vp": 2} ]
         },
         {
             "name": "O Grande Farol",
+            "type": "wonder",
             "cost": { "wood": 1, "stone": 1, "papyrus": 2 },
             "effects": [ { "or": { "clay": 1, "stone": 1, "wood": 1 } }, { "vp": 4 } ]
         },
         {
             "name": "O Circo Máximo",
+            "type": "wonder",
             "cost": { "stone": 2, "wood": 1, "glass": 1 },
             "effects": [ { "attack": "manufacture" }, { "shields": 1 }, { "vp": 3 } ]
         },
         {
             "name": "A Estátua de Zeus",
+            "type": "wonder",
             "cost": { "stone": 1, "wood": 1, "clay": 1, "papyrus": 2 },
             "effects": [ { "attack": "raw" }, { "shields": 1 }, { "vp": 3 } ]
         },
         {
             "name": "O Colosso",
+            "type": "wonder",
             "cost": { "clay": 3, "papyrus": 1 },
             "effects": [ { "shields": 2 }, { "vp": 3 } ]
         },
         {
             "name": "Estátua da Liberdade",
+            "type": "wonder",
             "cost": { "wood": 1, "stone": 1, "clay": 1, "papyrus": 1, "glass": 1 },
             "effects": [ { "take-from-reserve": 1 }, { "vp": 5 } ]
         },
         {
             "name": "Estátua da Liberdade",
+            "type": "wonder",
             "cost": { "wood": 1, "stone": 1, "clay": 1, "papyrus": 1, "glass": 1 },
             "effects": [ { "take-from-reserve": 1 }, { "vp": 5 } ]
         },
         {
             "name": "O Mausoléu",
+            "type": "wonder",
             "cost": { "clay": 2, "glass": 2, "papyrus": 1 },
             "effects": [ { "take-from-discard": 1 }, { "vp": 2 } ]
         },
         {
             "name": "A Grande Biblioteca",
+            "type": "wonder",
             "cost": { "wood": 3, "glass": 1, "papyrus": 1 },
             "effects": [ { "take-progress-token": 1 }, { "vp": 4 } ]
         },
         {
             "name": "Sagrada Família",
+            "type": "wonder",
             "cost": { "wood": 3, "glass": 1, "papyrus": 1 },
             "effects": [ { "take-progress-token": 1 }, { "vp": 4 } ]
         }
@@ -604,42 +620,52 @@
     "progress-tokens": [
         {
             "name": "Agricultura",
+            "type": "progress-token",
             "effects": { "coins": 6, "vp": 4 }
         },
         {
             "name": "Arquitetura",
+            "type": "progress-token",
             "effects": { "cost-discount": "wonder" }
         },
         {
             "name": "Economia",
+            "type": "progress-token",
             "effects": { "bank-dommination": 1 }
         },
         {
             "name": "Lei",
+            "type": "progress-token",
             "effects": { "science": "laws" }
         },
         {
             "name": "Alvenaria",
+            "type": "progress-token",
             "effects": { "cost-discount": "civic" }
         },
         {
             "name": "Matemática",
+            "type": "progress-token",
             "effects": { "vp-by-progress-token": 3 }
         },
         {
             "name": "Filosofia",
+            "type": "progress-token",
             "effects": { "vp": 7 }
         },
         {
             "name": "Estratégia",
+            "type": "progress-token",
             "effects": { "extra-shield-by-military": 1 }
         },
         {
             "name": "Teologia",
+            "type": "progress-token",
             "effects": { "replay-when-build-wonder": 1 }
         },
         {
             "name": "Urbanismo",
+            "type": "progress-token",
             "effects": { "coins": 6, "coins-when-chaining": 4 }
         }
     ],
