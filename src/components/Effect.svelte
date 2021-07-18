@@ -258,6 +258,24 @@
     color: white;
   }
 
+  .card-mini-coins,
+  .card-mini-progress-token {
+    width: 1.1rem;
+    height: 1.1rem;
+    border-width: 2px;
+    border-radius: 50%;
+  }
+
+  .card-mini-coins {
+    background: var(--coins-color);
+    border-color: #000;
+  }
+
+  .card-mini-progress-token {
+    background: var(--progress-token-color);
+    border-color: var(--progress-token-border-color);
+  }
+
   .card-mini-two-cities:before {
     content: '‹';
     position: absolute;
