@@ -2,10 +2,12 @@ import { writable, derived, get } from 'svelte/store';
 import { currentPlayer, playerOne, playerTwo } from './index';
 import { permuteAcc, listOfGroups } from '../utils';
 import { conflictTokens } from './index';
+import { chooseProgressToken } from '../actions';
 
 export default class Player {
   tableau = writable([]);
   debitTokens = writable([]);
+  takenProgressTokens = writable({});
 
   _coins = writable(7);
   _militaryVPs = writable(0);
@@ -91,7 +93,6 @@ export default class Player {
   };
 
   countCardsByType(testTypes) {
-
     if (Array.isArray(testTypes)) {
       return testTypes.reduce(
         (acc, type) => acc + this.$resources.cards[type],
@@ -102,9 +103,24 @@ export default class Player {
     return this.$resources.cards[testTypes];
   }
 
-  takeCard(card) {
-    this.tableau.update(tableau => [ card, ...tableau ]);
+  async checkScienceProgress() {
+    for (const science of this.$resources.sciences) {
+      if (Array.isArray(science) && !this.$takenProgressTokens[science[0]]) {
+        return this.takeProgressToken(science[0]);
+      }
+    }
 
+    return;
+  }
+
+  async takeProgressToken(science) {
+    const progressToken = await chooseProgressToken();
+
+    this.takenProgressTokens.update(o => ({ ...o, [science]: true }));
+    this.tableau.update(tableau => [ progressToken, ...tableau ]);
+  }
+
+  takeCoinsIfForeachCardEffect(card) {
     const foreachEffect = card.effects['foreach-card'];
 
     if (foreachEffect?.where === 'your-city') {
@@ -131,6 +147,14 @@ export default class Player {
 
       if (gain) this._coins.update(c => c + gain);
     }
+  }
+
+  async takeCard(card) {
+    this.tableau.update(tableau => [ card, ...tableau ]);
+
+    this.takeCoinsIfForeachCardEffect(card);
+
+    await this.checkScienceProgress();
 
     this._store.set(this);
   }
@@ -294,6 +318,10 @@ export default class Player {
 
   get $debitTokens() {
     return get(this.debitTokens);
+  }
+
+  get $takenProgressTokens() {
+    return get(this.takenProgressTokens);
   }
 
 };

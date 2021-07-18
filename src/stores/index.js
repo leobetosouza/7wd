@@ -3,6 +3,8 @@ import { writable, derived, get } from 'svelte/store';
 export const agePromise = writable();
 export const currentAgeName = writable('');
 export const isAgeInitSetupInProgress = writable(false);
+export const isProgressTokenBeingSelected = writable(false);
+export const selectedProgressToken = writable();
 
 export const currentPlayer = (() => {
   const player = writable({});
@@ -25,6 +27,7 @@ export const hasGameEnded = writable(false);
 
 export const removedCardSlots = writable([]);
 export const tableLayout = writable([]);
+
 export const discard = (() => {
   const cards = writable([]);
   const { subscribe, update } = cards;
@@ -86,3 +89,16 @@ export const conflictPawnIndex = derived(actionsStack, _ => {
     return Math.max(Math.min(diff + 9, 18), 0);
   }
 );
+
+export const progressTokenReserve = (() => {
+  const store = writable([]);
+  const { subscribe, set } = store;
+
+  return {
+    subscribe,
+    set
+  };
+
+})();
+
+export const availableProgressTokens = writable([])

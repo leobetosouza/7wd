@@ -7,6 +7,7 @@
   import MilitaryBoard from './components/military/MilitaryBoard.svelte';
   import Konami from './components/Konami.svelte';
   import ChooseFirstPlayer from './components/ChooseFirstPlayer.svelte';
+  import ProgressBoard from './components/progress/ProgressBoard.svelte'
 
   import {
     currentPlayer,
@@ -77,6 +78,7 @@
         </header>
         <PlayerTableau player={$playerOne} gridArea="player1" />
         <PlayerTableau player={$playerTwo} gridArea="player2" />
+        <ProgressBoard />
         <MilitaryBoard />
         {#if $hasGameEnded}
           <EndGameTable />
@@ -132,10 +134,11 @@
     overflow: hidden;
 
     grid-template-areas: 'header  header    header'
+                         'player1 progress  player2'
                          'player1 military  player2'
                          'player1 maintable player2';
     grid-template-columns: 15% auto 15%;
-    grid-template-rows: 5rem 2.8rem auto;
+    grid-template-rows: 5rem 5rem 2.8rem auto;
 
     justify-content: stretch;
 

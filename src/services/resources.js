@@ -56,6 +56,15 @@ export const get3rdAgeTableLayout = async () => {
   return resources['table-layouts']['3rd-age'];
 };
 
+export const getProgressTokens = async () => {
+  const resources = await resourcesPromise;
+
+  const reserve = shuffle(resources['progress-tokens']);
+  const progressTokens = reserve.slice(0, 5);
+
+  return { progressTokens, reserve };
+};
+
 export const getMilitaryBoardLayout = async () => {
   const resources = await resourcesPromise;
 

@@ -6,6 +6,7 @@ import {
   get1stAgeCards,
   get2ndAgeCards,
   get3rdAgeCards,
+  getProgressTokens,
   get1stAgeTableLayout,
   get2ndAgeTableLayout,
   get3rdAgeTableLayout,
@@ -31,6 +32,10 @@ import {
   conflictTokens,
   conflictPawnIndex,
   isAgeInitSetupInProgress,
+  progressTokenReserve,
+  availableProgressTokens,
+  isProgressTokenBeingSelected,
+  selectedProgressToken,
 } from '../stores';
 
 import Player from '../stores/player';
@@ -66,6 +71,13 @@ export const createPlayers = (playerOneData, playerTwoData) => {
   currentPlayer.set(playerControl.getCurrent());
 };
 
+const prepareProgressBoard = async () => {
+  const { progressTokens, reserve } = await getProgressTokens();
+
+  availableProgressTokens.set(progressTokens);
+  progressTokenReserve.set(reserve);
+};
+
 const prepareMilitaryBoard = async () => {
   const rawLayout = await getMilitaryBoardLayout();
   const tokens = rawLayout['conflict-tokens'];
@@ -97,7 +109,9 @@ const prepareAge =
 
     if (is1stAge) {
       const militaryBoardPromise = prepareMilitaryBoard();
+      const progressBoardPromise = prepareProgressBoard();
       promises.push(militaryBoardPromise);
+      promises.push(progressBoardPromise);
     }
 
     const cardsPromise = getAgeCards().then(res => {
@@ -237,7 +251,7 @@ const endTurn = $currentPlayer => {
   currentPlayer.set(playerControl.getNext());
 };
 
-export const buyCard = ({ card, slot }) => {
+export const buyCard = async ({ card, slot }) => {
   try {
     const $currentPlayer = get(currentPlayer);
 
@@ -245,7 +259,7 @@ export const buyCard = ({ card, slot }) => {
     if (cardCost) $currentPlayer.pay(cardCost);
 
     removedCardSlots.update(arr => [slot, ...arr]);
-    $currentPlayer.takeCard(card);
+    await $currentPlayer.takeCard(card);
 
     actionsStack.update(a => [
       {
@@ -278,4 +292,24 @@ export const sellCard = ({ card, slot }) => {
   ]);
 
   endTurn($currentPlayer);
+};
+
+export const selectProgressToken = progressToken => {
+  selectedProgressToken.set(progressToken)
+}
+
+export const chooseProgressToken = () => {
+  isProgressTokenBeingSelected.set(true);
+
+  return new Promise(resolve => {
+    const unsub = selectedProgressToken.subscribe(progressToken => {
+      if (progressToken) {
+        unsub();
+        availableProgressTokens.update(a => a.map(pt => (pt === progressToken) ? null : pt));
+        selectedProgressToken.set();
+        isProgressTokenBeingSelected.set(false);
+        resolve(progressToken);
+      }
+    });
+  });
 };
