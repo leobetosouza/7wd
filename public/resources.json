@@ -330,21 +330,21 @@
             "name": "Sala de Armas",
             "type": "trade",
             "cost": { "stone": 1, "glass": 1 },
-            "effects": { "foreach-card" : { "type": "military", "where": "your-city", "reward": { "coins": 1 } }, "vp": 3 },
+            "effects": { "foreach-card": { "type": "military", "where": "your-city", "reward": { "coins": 1 } }, "vp": 3 },
             "age": 3
         },
         {
             "name": "Arena",
             "type": "trade",
             "cost": { "clay": 1, "stone": 1, "wood": 1, "chain": "barrel" },
-            "effects": { "foreach-card" : { "type": "built-wonder", "where": "your-city", "reward": { "coins": 2 } }, "vp": 3 },
+            "effects": { "foreach-card": { "type": "built-wonder", "where": "your-city", "reward": { "coins": 2 } }, "vp": 3 },
             "age": 3
         },
         {
             "name": "Porto",
             "type": "trade",
             "cost": { "wood": 1, "glass": 1, "papyrus": 1 },
-            "effects": { "foreach-card" : { "type": "raw", "where": "your-city", "reward": { "coins": 2 } }, "vp": 3 },
+            "effects": { "foreach-card": { "type": "raw", "where": "your-city", "reward": { "coins": 2 } }, "vp": 3 },
             "age": 3
         },
         {
@@ -393,7 +393,7 @@
             "name": "Farol",
             "type": "trade",
             "cost": { "clay": 2, "glass": 1, "chain": "jar" },
-            "effects": { "foreach-card" : { "type": "trade", "where": "your-city", "reward": { "coins": 1 } }, "vp": 3 },
+            "effects": { "foreach-card": { "type": "trade", "where": "your-city", "reward": { "coins": 1 } }, "vp": 3 },
             "age": 3
         },
         {
@@ -463,7 +463,7 @@
             "name": "Câmara de Comércio",
             "type": "trade",
             "cost": { "papyrus": 2 },
-            "effects": { "foreach-card" : { "type": "manufacture", "where": "your-city", "reward": { "coins": 3 } }, "vp": 3 },
+            "effects": { "foreach-card": { "type": "manufacture", "where": "your-city", "reward": { "coins": 3 } }, "vp": 3 },
             "age": 3
         }
     ],
@@ -472,49 +472,49 @@
             "name": "Guilda dos Comerciantes",
             "type": "guild",
             "cost": { "clay": 1, "wood": 1, "glass": 1, "papyrus": 1 },
-            "effects": { "foreach-card" : { "type": "trade", "where": "most-of-type-city", "reward": { "coins": 1, "vp": 1 } } },
+            "effects": { "foreach-card": { "type": "trade", "where": "most-of-type-city", "reward": { "coins": 1, "vp": 1 } } },
             "age": 3
         },
         {
             "name": "Guilda dos Magistrados",
             "type": "guild",
             "cost": { "wood": 2, "clay": 1, "papyrus": 1 },
-            "effects": { "foreach-card" : { "type": "civic", "where": "most-of-type-city", "reward": { "coins": 1, "vp": 1 } } },
+            "effects": { "foreach-card": { "type": "civic", "where": "most-of-type-city", "reward": { "coins": 1, "vp": 1 } } },
             "age": 3
         },
         {
             "name": "Guilda dos Estrategistas",
             "type": "guild",
             "cost": { "stone": 2, "clay": 1, "papyrus": 1 },
-            "effects": { "foreach-card" : { "type": "military", "where": "most-of-type-city", "reward": { "coins": 1, "vp": 1 } } },
+            "effects": { "foreach-card": { "type": "military", "where": "most-of-type-city", "reward": { "coins": 1, "vp": 1 } } },
             "age": 3
         },
         {
             "name": "Guilda dos Armadores",
             "type": "guild",
             "cost": { "clay": 1, "stone": 1, "glass": 1, "papyrus": 1},
-            "effects": { "foreach-card" : { "type": ["raw", "manufacture"], "where": "most-of-type-city", "reward": { "coins": 1, "vp": 1 } } },
+            "effects": { "foreach-card": { "type": ["raw", "manufacture"], "where": "most-of-type-city", "reward": { "coins": 1, "vp": 1 } } },
             "age": 3
         },
         {
             "name": "Guilda dos Agiotas",
             "type": "guild",
             "cost": { "stone": 2, "wood": 2 },
-            "effects": { "foreach-card" : { "type": "coins", "where": "most-of-type-city", "reward": { "vp": 1 }, "divide-count-by": 3 } },
+            "effects": { "foreach-card": { "type": "coins", "where": "most-of-type-city", "reward": { "vp": 1 }, "divide-count-by": 3 } },
             "age": 3
         },
         {
             "name": "Guilda dos Cientistas",
             "type": "guild",
             "cost": { "clay": 2, "wood": 2 },
-            "effects": { "foreach-card" : { "type": "science", "where": "most-of-type-city", "reward": { "coins": 1, "vp": 1 } } },
+            "effects": { "foreach-card": { "type": "science", "where": "most-of-type-city", "reward": { "coins": 1, "vp": 1 } } },
             "age": 3
         },
         {
             "name": "Guilda dos Construtores",
             "type": "guild",
             "cost": { "stone": 2, "clay": 1, "wood": 1, "glass": 1 },
-            "effects": { "foreach-card" : { "type": "wonder", "where": "most-of-type-city", "reward": { "vp": 2 } } },
+            "effects": { "foreach-card": { "type": "wonder", "where": "most-of-type-city", "reward": { "vp": 2 } } },
             "age": 3
         }
     ],
@@ -646,7 +646,7 @@
         {
             "name": "Matemática",
             "type": "progress-token",
-            "effects": { "vp-by-progress-token": 3 }
+            "effects": { "foreach-card": { "type": "progress-token", "where": "your-city", "reward": { "vp": 3 } } }
         },
         {
             "name": "Filosofia",

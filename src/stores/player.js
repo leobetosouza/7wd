@@ -123,6 +123,8 @@ export default class Player {
   takeCoinsIfForeachCardEffect(card) {
     const foreachEffect = card.effects['foreach-card'];
 
+    if (!foreachEffect?.reward?.coins) return;
+
     if (foreachEffect?.where === 'your-city') {
       const count = this.countCardsByType(foreachEffect.type);
       const newCoins = foreachEffect.reward.coins || 0;
@@ -131,10 +133,7 @@ export default class Player {
       if (gain) this._coins.update(c => c + gain);
     }
 
-    if (
-      foreachEffect?.where === 'most-of-type-city' &&
-      foreachEffect?.reward?.coins
-    ) {
+    if (foreachEffect?.where === 'most-of-type-city') {
 
       const currentPlayerCount = this.countCardsByType(foreachEffect.type);
       const opponentPlayerCount =
@@ -184,7 +183,6 @@ export default class Player {
         }
 
         if (foreachEffect.reward.vp) {
-
           const currentPlayerCount = this.countCardsByType(foreachEffect.type);
           const opponentPlayerCount =
             this.getOpponentPlayer().countCardsByType(foreachEffect.type)
@@ -195,6 +193,13 @@ export default class Player {
 
           return acc + gain;
         }
+      }
+
+      if (foreachEffect?.where === 'your-city' && foreachEffect?.reward?.vp) {
+        const count = this.countCardsByType(foreachEffect.type);
+        const gain = count * foreachEffect.reward.vp;
+
+        return acc + gain;
       }
 
       return acc;
